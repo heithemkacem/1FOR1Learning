@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { logo1for1Xml } from '@/src/assets/images/logo1for1Xml';
-import { IdentifierLogin } from '@/src/components/login-screen/IdentifierLogin';
-import { LegalNotice } from '@/src/components/login-screen/LegalNotice';
-import { LoginBackground } from '@/src/components/login-screen/LoginBackground';
-import { SocialLogins } from '@/src/components/login-screen/SocialLogins';
+import { IdentifierLogin } from '@/src/components/screens/login-screen/IdentifierLogin';
+import { LegalNotice } from '@/src/components/screens/login-screen/LegalNotice';
+import { LoginBackground } from '@/src/components/screens/login-screen/LoginBackground';
+import { SocialLogins } from '@/src/components/screens/login-screen/SocialLogins';
 import { ThemedScreen } from '@/src/components/themed-screen';
 import { useTheme } from '@/src/hooks/use-theme';
 import { useClerkAuth } from '@/src/hooks/useClerkAuth';

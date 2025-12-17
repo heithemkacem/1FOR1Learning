@@ -5,7 +5,7 @@ import { BrandButton } from '@/src/components/ui/brand-button';
 import { BrandInput } from '@/src/components/ui/brand-input';
 import { BrandColors } from '@/src/constants/theme';
 import { useTheme } from '@/src/hooks/use-theme';
-import { ThemedText } from '../themed-text';
+import { ThemedText } from '../../themed-text';
 
 type Mode = 'email' | 'phone';
 

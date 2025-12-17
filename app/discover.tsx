@@ -143,25 +143,7 @@ export default function DiscoverScreen() {
         </View>
       </ImageBackground>
 
-      <ThemedView style={styles.sections} lightColor={colors.screen} darkColor={colors.screen}>
-        {data.sections.map((section) => (
-          <ThemedView
-            key={section.title}
-            style={[styles.sectionCard, { borderColor: colors.border }]}
-            lightColor={colors.card}
-            darkColor={colors.card}>
-            <Image source={{ uri: section.image }} style={[styles.sectionImage, { backgroundColor: colors.surfaceMuted }]} />
-            <View style={styles.sectionContent}>
-              <ThemedText size={15} style={[styles.sectionTitle, { color: colors.accentPrimary }]} lightColor={colors.accentPrimary} darkColor={colors.accentPrimary}>
-                {section.title}
-              </ThemedText>
-              <ThemedText size={13} style={[styles.sectionCopy, { color: colors.text }]} lightColor={colors.text} darkColor={colors.text}>
-                {section.copy}
-              </ThemedText>
-            </View>
-          </ThemedView>
-        ))}
-      </ThemedView>
+     
     </ThemedScreen>
   );
 }

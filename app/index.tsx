@@ -1,13 +1,5 @@
-import { ThemedScreen } from '@/src/components/themed-screen';
-import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
+import SplashScreen from '@/src/components/screens/splach_screen/SplashScreen';
 
-export default function Index() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace('/splash');
-  }, [router]);
-
-  return <ThemedScreen />;
+export default function SplashScreenPage() {
+  return <SplashScreen />;
 }

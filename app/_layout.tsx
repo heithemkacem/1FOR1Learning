@@ -63,13 +63,19 @@ export default function RootLayout() {
           <NavigationThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <ClerkLoaded>
               <SnackBarProvider>
-                <Stack initialRouteName="splash">
-                  <Stack.Screen name="splash" options={{ headerShown: false }} />
-                  <Stack.Screen name="login" options={{ headerShown: false }} />
-                  <Stack.Screen name="loading" options={{ headerShown: false }} />
-                  <Stack.Screen name="discover" options={{ headerShown: false }} />
+                <Stack
+                  initialRouteName="index"
+                  screenOptions={{
+                    headerShown: false,
+                    animation: 'slide_from_right',
+                    animationDuration: 300,
+                  }}
+                >
+                  <Stack.Screen name="index" options={{ animation: 'fade' }} />
+                  <Stack.Screen name="login" options={{ animation: 'simple_push' }} />
+                  <Stack.Screen name="loading" options={{ animation: 'fade' }} />
+                  <Stack.Screen name="discover" options={{ animation: 'slide_from_left' }} />
                 </Stack>
-               
               </SnackBarProvider>
             </ClerkLoaded>
           </NavigationThemeProvider>

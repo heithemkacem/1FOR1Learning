@@ -31,6 +31,7 @@ export function useClerkAuth() {
     () =>
       makeRedirectUri({
         scheme: 'one-for-one-learning',
+        path: 'oauth-native-callback',
       }),
     [],
   );
@@ -78,8 +79,21 @@ export function useClerkAuth() {
     setError('');
     try {
       const strategy = mode === 'email' ? 'email_code' : 'phone_code';
-      await signIn?.create({ identifier: identifier.trim() });
-      await signIn?.prepareFirstFactor({ strategy });
+      const signInAttempt = await signIn?.create({ identifier: identifier.trim() });
+
+      // Find the matching factor from supportedFirstFactors
+      const factor = signInAttempt?.supportedFirstFactors?.find((f) => f.strategy === strategy);
+
+      if (!factor) {
+        throw new Error(`No ${mode} verification method available for this account.`);
+      }
+
+      if (strategy === 'email_code' && 'emailAddressId' in factor) {
+        await signIn?.prepareFirstFactor({ strategy, emailAddressId: factor.emailAddressId });
+      } else if (strategy === 'phone_code' && 'phoneNumberId' in factor) {
+        await signIn?.prepareFirstFactor({ strategy, phoneNumberId: factor.phoneNumberId });
+      }
+
       setVerification({ step: 'verify', strategy });
     } catch (err: any) {
       const message = err?.errors?.[0]?.message ?? 'Unable to start sign-in. Please try again.';
@@ -122,17 +136,46 @@ export function useClerkAuth() {
 
   const handleOAuth = useCallback(
     async (provider: 'google' | 'facebook') => {
+      setLoading(true);
+      setError('');
       try {
         const flow = provider === 'google' ? googleOAuth : facebookOAuth;
-        const { createdSessionId, setActive: setActiveOAuth } = await flow.startOAuthFlow({ redirectUrl });
-        if (createdSessionId) {
-          await setActiveOAuth?.({ session: createdSessionId });
+        const {
+          createdSessionId,
+          signIn: oAuthSignIn,
+          signUp: oAuthSignUp,
+          setActive: setActiveOAuth,
+        } = await flow.startOAuthFlow({ redirectUrl });
+
+        // Clerk may return the session on any of the payloads depending on provider/state
+        const sessionId =
+          createdSessionId ??
+          oAuthSignIn?.createdSessionId ??
+          oAuthSignUp?.createdSessionId;
+
+        if (sessionId) {
+          await setActiveOAuth?.({ session: sessionId });
           router.replace('/loading');
+          return;
         }
-      } catch (err) {
-        const message = 'Social login failed. Please try again.';
+
+        // If Clerk needs additional steps, surface a clearer message
+        if (oAuthSignIn?.status === 'needs_first_factor' || oAuthSignUp?.status === 'missing_requirements') {
+          const message = 'Additional verification required. Complete the step in browser, then try again.';
+          setError(message);
+          showSnack({ message, variant: 'error' });
+          return;
+        }
+
+        const message = 'Social login did not return a session. Verify the redirect URL is whitelisted and retry.';
         setError(message);
         showSnack({ message, variant: 'error' });
+      } catch (err) {
+        const message = (err as any)?.errors?.[0]?.message ?? 'Social login failed. Please try again.';
+        setError(message);
+        showSnack({ message, variant: 'error' });
+      } finally {
+        setLoading(false);
       }
     },
     [facebookOAuth, googleOAuth, redirectUrl, router, showSnack],

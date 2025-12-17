@@ -51,6 +51,7 @@ type UIColors = {
   border: string;
   borderStrong: string;
   scrim: string;
+  purple: string;
   scrimStrong: string;
   onBrand: string;
   onDark: string;
@@ -79,7 +80,7 @@ const BasePalette: Record<ThemeName, BaseColors> = {
   },
   dark: {
     text: '#ECEDEE',
-    background: '#151718',
+    background: '#242424',
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
@@ -103,6 +104,7 @@ const UIpalette: Record<ThemeName, UIColors> = {
     mutedText: '#6F7075',
     accentPrimary: BrandColors.primary,
     accentSecondary: BrandColors.secondary,
+    purple:"#4000FF",
     successBg: '#0BBF63',
     successText: '#04160D',
     errorBg: '#FF5C5C',
@@ -120,6 +122,7 @@ const UIpalette: Record<ThemeName, UIColors> = {
     border: 'rgba(255,255,255,0.1)',
     borderStrong: 'rgba(255,255,255,0.14)',
     scrim: 'rgba(0,0,0,0.45)',
+    purple:"#4000FF",
     scrimStrong: 'rgba(0,0,0,0.6)',
     onBrand: '#0A0A0A',
     onDark: '#FFFFFF',
