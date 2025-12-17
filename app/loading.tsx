@@ -1,15 +1,16 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { ThemedScreen } from '@/src/components/themed-screen';
 import { ThemedText } from '@/src/components/themed-text';
 import { ThemedView } from '@/src/components/themed-view';
 import { ProgressRing } from '@/src/components/ui/progress-ring';
-import { BrandColors } from '@/src/constants/theme';
+import { useTheme } from '@/src/hooks/use-theme';
 
 export default function LoadingScreen() {
   const router = useRouter();
+  const { colors } = useTheme();
   const [progress, setProgress] = useState(35);
 
   useEffect(() => {
@@ -28,31 +29,32 @@ export default function LoadingScreen() {
   }, [router]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ThemedView style={styles.container} lightColor={BrandColors.primary} darkColor={BrandColors.primary}>
+    <ThemedScreen colorName="accentPrimary">
+      <ThemedView style={styles.container} colorName="accentPrimary">
         <ProgressRing progress={progress} />
         <View style={styles.labelRow}>
-          <ThemedText size={15} style={styles.label} lightColor="#0A0A0A" darkColor="#0A0A0A">
+          <ThemedText size={15} style={[styles.label, { color: colors.onBrand }]}
+            lightColor={colors.onBrand}
+            darkColor={colors.onBrand}>
             Selecting topics for
           </ThemedText>
           <ThemedText
             size={15}
-            style={[styles.label, styles.labelAccent]}
-            lightColor={BrandColors.secondary}
-            darkColor={BrandColors.secondary}>
+            style={[styles.label, { color: colors.accentSecondary }]}
+            lightColor={colors.accentSecondary}
+            darkColor={colors.accentSecondary}>
             you...
           </ThemedText>
         </View>
-        <ThemedText size={14} style={styles.helper} lightColor="#0A0A0A" darkColor="#0A0A0A">
+        <ThemedText size={14} style={[styles.helper, { color: colors.onBrand }]} lightColor={colors.onBrand} darkColor={colors.onBrand}>
           We are picking experiences tailored to you.
         </ThemedText>
       </ThemedView>
-    </SafeAreaView>
+    </ThemedScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: BrandColors.primary },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -67,15 +69,10 @@ const styles = StyleSheet.create({
   },
   label: {
     textAlign: 'center',
-    color: '#0A0A0A',
     fontWeight: '800',
-  },
-  labelAccent: {
-    color: BrandColors.secondary,
   },
   helper: {
     textAlign: 'center',
-    color: '#0A0A0A',
     fontWeight: '700',
     lineHeight: 20,
   },

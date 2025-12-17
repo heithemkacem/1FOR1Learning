@@ -1,3 +1,4 @@
+import { BrandColors } from '@/src/constants/theme';
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
@@ -6,7 +7,7 @@ type Props = {
   color?: string;
 };
 
-export function LanguageIcon({ size = 24, color = '#FFFFFF' }: Props) {
+export function LanguageIcon({ size = 24, color = BrandColors.onPrimary }: Props) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path

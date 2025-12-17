@@ -1,3 +1,4 @@
+import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
@@ -26,6 +27,10 @@ type Props = {
   backgroundGradientStart?: { x: number; y: number };
   backgroundGradientEnd?: { x: number; y: number };
   backgroundColorOverride?: string;
+  labelGradientColors?: string[];
+  labelGradientStart?: { x: number; y: number };
+  labelGradientEnd?: { x: number; y: number };
+  centerContent?: boolean;
 };
 
 export function BrandButton({
@@ -42,14 +47,45 @@ export function BrandButton({
   backgroundGradientStart = { x: 0, y: 0 },
   backgroundGradientEnd = { x: 1, y: 0 },
   backgroundColorOverride,
+  labelGradientColors,
+  labelGradientStart = { x: 0, y: 0.5 },
+  labelGradientEnd = { x: 1, y: 0.5 },
+  centerContent = false,
 }: Props) {
   const palette = getVariant(variant);
   const isDisabled = disabled || loading;
-  const borderColors = borderGradientColors ?? [palette.border, palette.border];
+  const borderColors = ensureTwoStops(borderGradientColors) ?? [palette.border, palette.border];
   const backgroundColors = backgroundGradientColors ?? [backgroundColorOverride ?? palette.background];
+  const labelColors = ensureTwoStops(labelGradientColors);
   const hasBackgroundGradient = backgroundColors.length > 1;
-  const hasBorderGradient = borderColors.length > 1 || borderGradientColors !== undefined;
+  const hasBorderGradient = borderColors.length > 1;
+  const hasLabelGradient = (labelColors?.length ?? 0) > 1;
   const BorderWrapper = hasBorderGradient ? LinearGradient : View;
+
+  const renderLabel = () => {
+    if (!hasLabelGradient) {
+      return (
+        <ThemedText size={16} type='medium' style={[styles.label, { color: palette.label }]}>
+          {label}
+        </ThemedText>
+      );
+    }
+
+    return (
+      <MaskedView
+        maskElement={
+          <ThemedText size={16} type='medium' style={[styles.label, styles.maskLabel]}>
+            {label}
+          </ThemedText>
+        }>
+        <LinearGradient colors={labelColors!} start={labelGradientStart} end={labelGradientEnd}>
+          <ThemedText size={16} type='medium' style={[styles.label, styles.hiddenLabel]}>
+            {label}
+          </ThemedText>
+        </LinearGradient>
+      </MaskedView>
+    );
+  };
 
   return (
     <Pressable
@@ -72,17 +108,17 @@ export function BrandButton({
             start={backgroundGradientStart}
             end={backgroundGradientEnd}
             style={styles.innerLayer}>
-            <View style={styles.content}>
+            <View style={[styles.content, centerContent ? styles.contentCentered : null]}>
               {leftIcon ? <View style={styles.icon}>{leftIcon}</View> : null}
-              <ThemedText size={15} style={[styles.label, { color: palette.label }]}>{label}</ThemedText>
+              {renderLabel()}
               {loading ? <ActivityIndicator size="small" color={palette.label} style={styles.spinner} /> : <View style={styles.spinner} />}
             </View>
           </LinearGradient>
         ) : (
           <View style={[styles.innerLayer, { backgroundColor: backgroundColors[0] }]}>
-            <View style={styles.content}>
+            <View style={[styles.content, centerContent ? styles.contentCentered : null]}>
               {leftIcon ? <View style={styles.icon}>{leftIcon}</View> : null}
-              <ThemedText size={15} style={[styles.label, { color: palette.label }]}>{label}</ThemedText>
+              {renderLabel()}
               {loading ? <ActivityIndicator size="small" color={palette.label} style={styles.spinner} /> : <View style={styles.spinner} />}
             </View>
           </View>
@@ -114,27 +150,34 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingHorizontal: 14,
+    justifyContent: 'flex-start',
+    gap: 12,
+    paddingHorizontal: 16,
     paddingVertical: 12,
-    paddingLeft: 36,
     position: 'relative',
   },
+  contentCentered: {
+    justifyContent: 'center',
+  },
   label: {
-    fontWeight: '700',
     letterSpacing: 0.1,
     textAlign: 'center',
   },
+  hiddenLabel: {
+    opacity: 0,
+  },
+  maskLabel: {
+    color: '#000',
+  },
   icon: {
-    position: 'absolute',
-    left: 12,
     width: 24,
     height: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
   spinner: {
+    position: 'absolute',
+    right: 12,
     width: 22,
     alignItems: 'center',
   },
@@ -153,10 +196,22 @@ function getVariant(variant: BrandButtonVariant) {
     case 'ghost':
       return { background: 'transparent', border: 'transparent', label: BrandColors.text };
     case 'facebook':
-      return { background: '#0D8BF1', border: '#0D8BF1', label: '#FFFFFF' };
+      return { background: BrandColors.facebook, border: BrandColors.facebook, label: BrandColors.text };
     case 'google':
-      return { background: '#00C8FF', border: '#00C8FF', label: '#FFFFFF' };
+      return { background: BrandColors.google, border: BrandColors.google, label: BrandColors.text };
     default:
-      return { background: BrandColors.primary, border: BrandColors.primary, label: '#0A0A0A' };
+      return { background: BrandColors.primary, border: BrandColors.primary, label: BrandColors.onPrimary };
   }
+}
+
+function ensureTwoStops(colors?: string[]) {
+  if (!colors || colors.length === 0) {
+    return colors;
+  }
+
+  if (colors.length === 1) {
+    return [colors[0], colors[0]];
+  }
+
+  return colors;
 }

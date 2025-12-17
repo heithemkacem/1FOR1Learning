@@ -1,15 +1,15 @@
 import { ClerkLoaded, ClerkProvider } from '@clerk/clerk-expo';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect, useMemo } from 'react';
 import 'react-native-reanimated';
 
 import { SnackBarProvider } from '@/src/components/ui/snackbar';
 import { useColorScheme } from '@/src/hooks/use-color-scheme';
+import { AppThemeProvider } from '@/src/hooks/use-theme';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -35,7 +35,12 @@ export default function RootLayout() {
     InterMediumItalic: require('../src/assets/fonts/Inter_24pt-MediumItalic.ttf'),
     InterSemiBold: require('../src/assets/fonts/Inter_24pt-SemiBold.ttf'),
     InterSemiBoldItalic: require('../src/assets/fonts/Inter_24pt-SemiBoldItalic.ttf'),
+    InterBold: require('../src/assets/fonts/Inter_24pt-Bold.ttf'),
+    InterBoldItalic: require('../src/assets/fonts/Inter_24pt-BoldItalic.ttf'),
+    InterExtraBold: require('../src/assets/fonts/Inter_24pt-ExtraBold.ttf'),
     InterExtraBoldItalic: require('../src/assets/fonts/Inter_24pt-ExtraBoldItalic.ttf'),
+    InterBlack: require('../src/assets/fonts/Inter_24pt-Black.ttf'),
+    InterBlackItalic: require('../src/assets/fonts/Inter_24pt-BlackItalic.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -54,19 +59,21 @@ export default function RootLayout() {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <ClerkLoaded>
-            <SnackBarProvider>
-              <Stack initialRouteName="splash">
-                <Stack.Screen name="splash" options={{ headerShown: false }} />
-                <Stack.Screen name="login" options={{ headerShown: false }} />
-                <Stack.Screen name="loading" options={{ headerShown: false }} />
-                <Stack.Screen name="discover" options={{ headerShown: false }} />
-              </Stack>
-              <StatusBar style="auto" />
-            </SnackBarProvider>
-          </ClerkLoaded>
-        </ThemeProvider>
+        <AppThemeProvider>
+          <NavigationThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <ClerkLoaded>
+              <SnackBarProvider>
+                <Stack initialRouteName="splash">
+                  <Stack.Screen name="splash" options={{ headerShown: false }} />
+                  <Stack.Screen name="login" options={{ headerShown: false }} />
+                  <Stack.Screen name="loading" options={{ headerShown: false }} />
+                  <Stack.Screen name="discover" options={{ headerShown: false }} />
+                </Stack>
+               
+              </SnackBarProvider>
+            </ClerkLoaded>
+          </NavigationThemeProvider>
+        </AppThemeProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );

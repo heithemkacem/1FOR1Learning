@@ -1,6 +1,6 @@
+import { ThemedScreen } from '@/src/components/themed-screen';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { View } from 'react-native';
 
 export default function Index() {
   const router = useRouter();
@@ -9,5 +9,5 @@ export default function Index() {
     router.replace('/splash');
   }, [router]);
 
-  return <View />;
+  return <ThemedScreen />;
 }

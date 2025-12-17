@@ -5,6 +5,7 @@ import { useThemeColor } from '@/src/hooks/use-theme-color';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
+  colorName?: Parameters<typeof useThemeColor>[1];
   size?: number;
   type?:
     | 'thin'
@@ -19,18 +20,24 @@ export type ThemedTextProps = TextProps & {
     | 'mediumItalic'
     | 'semiBold'
     | 'semiBoldItalic'
-    | 'extraBoldItalic';
+    | 'bold'
+    | 'boldItalic'
+    | 'extraBold'
+    | 'extraBoldItalic'
+    | 'black'
+    | 'blackItalic';
 };
 
 export function ThemedText({
   style,
   lightColor,
   darkColor,
+  colorName = 'text',
   size = 14,
   type = 'regular',
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, colorName);
 
   return (
     <Text
@@ -81,7 +88,22 @@ const fontStyles = StyleSheet.create({
   semiBoldItalic: {
     fontFamily: 'InterSemiBoldItalic',
   },
+  bold: {
+    fontFamily: 'InterBold',
+  },
+  boldItalic: {
+    fontFamily: 'InterBoldItalic',
+  },
+  extraBold: {
+    fontFamily: 'InterExtraBold',
+  },
   extraBoldItalic: {
     fontFamily: 'InterExtraBoldItalic',
+  },
+  black: {
+    fontFamily: 'InterBlack',
+  },
+  blackItalic: {
+    fontFamily: 'InterBlackItalic',
   },
 });

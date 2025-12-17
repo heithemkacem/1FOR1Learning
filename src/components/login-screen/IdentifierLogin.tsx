@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { BrandButton } from '@/src/components/ui/brand-button';
 import { BrandInput } from '@/src/components/ui/brand-input';
+import { BrandColors } from '@/src/constants/theme';
+import { useTheme } from '@/src/hooks/use-theme';
 import { ThemedText } from '../themed-text';
 
 type Mode = 'email' | 'phone';
@@ -30,19 +32,34 @@ export function IdentifierLogin({
   onCodeChange,
   onSubmit,
 }: Props) {
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
       <View style={styles.toggleRow}>
         <Pressable style={[styles.toggle, mode === 'email' ? styles.toggleActive : null]} onPress={() => onModeChange('email')}>
           <View style={styles.toggleContent}>
-            <View style={[styles.radioOuter, mode === 'email' ? styles.radioOuterActive : null]}>{mode === 'email' ? <View style={styles.radioInner} /> : null}</View>
-            <ThemedText size={13} style={[styles.toggleLabel, mode === 'email' ? styles.toggleLabelActive : null]}>Email address</ThemedText>
+            <View
+              style={[
+                styles.radioOuter,
+                { borderColor: colors.inputBorder, backgroundColor: colors.screen },
+                mode === 'email' ? styles.radioOuterActive : null,
+              ]}>
+              {mode === 'email' ? <View style={[styles.radioInner, { backgroundColor: colors.accentSecondary }]} /> : null}
+            </View>
+            <ThemedText size={16} style={[{ color: colors.text },]} type="medium">Email address</ThemedText>
           </View>
         </Pressable>
         <Pressable style={[styles.toggle, mode === 'phone' ? styles.toggleActive : null]} onPress={() => onModeChange('phone')}>
           <View style={styles.toggleContent}>
-            <View style={[styles.radioOuter, mode === 'phone' ? styles.radioOuterActive : null]}>{mode === 'phone' ? <View style={styles.radioInner} /> : null}</View>
-            <ThemedText size={13} style={[styles.toggleLabel, mode === 'phone' ? styles.toggleLabelActive : null]}>Phone</ThemedText>
+            <View
+              style={[
+                styles.radioOuter,
+                { borderColor: colors.inputBorder, backgroundColor: colors.screen },
+                mode === 'phone' ? styles.radioOuterActive : null,
+              ]}>
+              {mode === 'phone' ? <View style={[styles.radioInner, { backgroundColor: colors.accentSecondary }]} /> : null}
+            </View>
+            <ThemedText size={16} style={[ { color: colors.text }]} type="medium">Phone</ThemedText>
           </View>
         </Pressable>
       </View>
@@ -73,10 +90,11 @@ export function IdentifierLogin({
           label={showVerify ? 'Confirm code' : 'Continue'}
           onPress={onSubmit}
           loading={loading}
-          backgroundGradientColors={["#FFFF53"]}
-          borderGradientColors={["#b9f747ff", "#B8FF35"]}
+          backgroundGradientColors={[colors.accentPrimary]}
+          borderGradientColors={[BrandColors.authBorder]}
           backgroundGradientStart={{ x: 0, y: 0.5 }}
           backgroundGradientEnd={{ x: 1, y: 0.5 }}
+          centerContent
         />
       </View>
     </View>
@@ -111,27 +129,18 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0B0B0C',
   },
   radioOuterActive: {
-    borderColor: '#44DBE5',
+    borderColor: BrandColors.secondary,
   },
   radioInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#44DBE5',
   },
-  toggleLabel: {
-    color: '#A4A5AE',
-    fontWeight: '700',
-  },
-  toggleLabelActive: {
-    color: '#FFFFFF',
-  },
+ 
   form: {
     gap: 14,
   },

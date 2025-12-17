@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
-import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { logo1for1Xml } from '@/src/assets/images/logo1for1Xml';
 import { IdentifierLogin } from '@/src/components/login-screen/IdentifierLogin';
 import { LegalNotice } from '@/src/components/login-screen/LegalNotice';
 import { LoginBackground } from '@/src/components/login-screen/LoginBackground';
 import { SocialLogins } from '@/src/components/login-screen/SocialLogins';
+import { ThemedScreen } from '@/src/components/themed-screen';
+import { useTheme } from '@/src/hooks/use-theme';
 import { useClerkAuth } from '@/src/hooks/useClerkAuth';
 
 export default function LoginScreen() {
@@ -24,12 +25,13 @@ export default function LoginScreen() {
     handleOAuth,
   } = useClerkAuth();
 
-  const whiteLogoXml = useMemo(() => logo1for1Xml.replace(/#1D1D1B/gi, '#FFFFFF'), []);
+  const { colors } = useTheme();
+  const whiteLogoXml = useMemo(() => logo1for1Xml.replace(/#1D1D1B/gi, colors.onDark), [colors.onDark]);
   const handleSubmit = showVerify ? handleVerifyCode : handleRequestCode;
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" />
+    <ThemedScreen style={styles.safeArea}>
+    
       <ScrollView contentContainerStyle={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
         <LoginBackground whiteLogoXml={whiteLogoXml} />
 
@@ -50,7 +52,7 @@ export default function LoginScreen() {
           <LegalNotice />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </ThemedScreen>
   );
 }
 
@@ -58,11 +60,9 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     paddingHorizontal: 10,
-    backgroundColor: '#0B0B0C',
   },
   container: {
     paddingBottom: 32,
-    backgroundColor: '#0B0B0C',
   },
   card: {
     borderRadius: 20,

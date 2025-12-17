@@ -4,12 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Image, ImageBackground, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { ThemedScreen } from '@/src/components/themed-screen';
 import { ThemedText } from '@/src/components/themed-text';
 import { ThemedView } from '@/src/components/themed-view';
 import { BrandButton } from '@/src/components/ui/brand-button';
-import { BrandColors } from '@/src/constants/theme';
+import { useTheme } from '@/src/hooks/use-theme';
 
 type DiscoverData = {
   hero: string;
@@ -58,6 +58,7 @@ const fetchDiscover = async (): Promise<DiscoverData> => {
 export default function DiscoverScreen() {
   const router = useRouter();
   const { signOut } = useAuth();
+  const { colors } = useTheme();
   const [activeSlide, setActiveSlide] = useState(0);
   const { width } = useWindowDimensions();
 
@@ -84,13 +85,13 @@ export default function DiscoverScreen() {
   if (!data) return null;
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <ThemedScreen style={styles.safeArea}>
       <ImageBackground source={{ uri: data.hero }} style={styles.hero} imageStyle={styles.heroImage}>
-        <View style={styles.overlay} />
+        <View style={[styles.overlay, { backgroundColor: colors.scrim }]} />
         <View style={styles.headerRow}>
           <View style={styles.flagRow}>
-            <Image source={{ uri: data.flag }} style={styles.flag} />
-            <ThemedText size={16} style={styles.flagText} lightColor="#FFFFFF" darkColor="#FFFFFF">
+            <Image source={{ uri: data.flag }} style={[styles.flag, { backgroundColor: colors.onDark }]} />
+            <ThemedText size={16} style={[styles.flagText, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
               Tunisia
             </ThemedText>
           </View>
@@ -98,27 +99,27 @@ export default function DiscoverScreen() {
         </View>
 
         <View style={styles.titleBlock}>
-          <ThemedText size={30} style={styles.title} lightColor="#FFFFFF" darkColor="#FFFFFF">
+          <ThemedText size={30} style={[styles.title, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
             Discover
           </ThemedText>
-          <ThemedText size={30} style={styles.title} lightColor="#FFFFFF" darkColor="#FFFFFF">
+          <ThemedText size={30} style={[styles.title, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
             Tunisian traditions
           </ThemedText>
         </View>
 
-        <ThemedView style={styles.card} lightColor={BrandColors.overlay} darkColor={BrandColors.overlay}>
+        <ThemedView style={[styles.card, { borderColor: colors.border }]} lightColor={colors.card} darkColor={colors.card}>
           <View style={styles.cardHeader}>
-            <ThemedText size={18} style={styles.cardTitle} lightColor="#FFFFFF" darkColor="#FFFFFF">
+            <ThemedText size={18} style={[styles.cardTitle, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
               Tunisia
             </ThemedText>
-            <View style={styles.likes}>
-              <Ionicons name="heart" size={16} color={BrandColors.primary} />
-              <ThemedText style={styles.likesText} lightColor="#FFFFFF" darkColor="#FFFFFF">
+            <View style={[styles.likes, { backgroundColor: colors.pill }]}> 
+              <Ionicons name="heart" size={16} color={colors.accentPrimary} />
+              <ThemedText style={[styles.likesText, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
                 {data.likes}
               </ThemedText>
             </View>
           </View>
-          <ThemedText size={14} style={styles.cardCopy} lightColor="#EAEAEA" darkColor="#EAEAEA">
+          <ThemedText size={14} style={[styles.cardCopy, { color: colors.text }]} lightColor={colors.text} darkColor={colors.text}>
             {data.description}
           </ThemedText>
         </ThemedView>
@@ -136,39 +137,38 @@ export default function DiscoverScreen() {
             decelerationRate="fast"
             snapToInterval={slideWidth + 12}
           />
-          <View style={styles.carouselMeta}>
-            <ThemedText style={styles.carouselText}>{`${activeSlide + 1}/${slides.length}`}</ThemedText>
+          <View style={[styles.carouselMeta, { backgroundColor: colors.scrimStrong }]}>
+            <ThemedText style={[styles.carouselText, { color: colors.onDark }]}>{`${activeSlide + 1}/${slides.length}`}</ThemedText>
           </View>
         </View>
       </ImageBackground>
 
-      <ThemedView style={styles.sections} lightColor="#0A0A0B" darkColor="#0A0A0B">
+      <ThemedView style={styles.sections} lightColor={colors.screen} darkColor={colors.screen}>
         {data.sections.map((section) => (
           <ThemedView
             key={section.title}
-            style={styles.sectionCard}
-            lightColor="#111114"
-            darkColor="#111114">
-            <Image source={{ uri: section.image }} style={styles.sectionImage} />
+            style={[styles.sectionCard, { borderColor: colors.border }]}
+            lightColor={colors.card}
+            darkColor={colors.card}>
+            <Image source={{ uri: section.image }} style={[styles.sectionImage, { backgroundColor: colors.surfaceMuted }]} />
             <View style={styles.sectionContent}>
-              <ThemedText size={15} style={styles.sectionTitle} lightColor={BrandColors.primary} darkColor={BrandColors.primary}>
+              <ThemedText size={15} style={[styles.sectionTitle, { color: colors.accentPrimary }]} lightColor={colors.accentPrimary} darkColor={colors.accentPrimary}>
                 {section.title}
               </ThemedText>
-              <ThemedText size={13} style={styles.sectionCopy} lightColor="#E6E6E8" darkColor="#E6E6E8">
+              <ThemedText size={13} style={[styles.sectionCopy, { color: colors.text }]} lightColor={colors.text} darkColor={colors.text}>
                 {section.copy}
               </ThemedText>
             </View>
           </ThemedView>
         ))}
       </ThemedView>
-    </SafeAreaView>
+    </ThemedScreen>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0A0A0B',
   },
   hero: {
     height: 520,
@@ -181,7 +181,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.45)',
   },
   headerRow: {
     flexDirection: 'row',
@@ -198,10 +197,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
   },
   flagText: {
-    color: '#FFFFFF',
     fontWeight: '800',
   },
   titleBlock: {
@@ -209,17 +206,14 @@ const styles = StyleSheet.create({
     gap: -2,
   },
   title: {
-    color: '#FFFFFF',
     fontWeight: '900',
   },
   card: {
     marginTop: 22,
-    backgroundColor: BrandColors.overlay,
     borderRadius: 18,
     padding: 16,
     gap: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -227,24 +221,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardTitle: {
-    color: '#FFFFFF',
     fontWeight: '800',
   },
   likes: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: 'rgba(255,255,255,0.12)',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
   },
   likesText: {
-    color: '#FFFFFF',
     fontWeight: '700',
   },
   cardCopy: {
-    color: '#EAEAEA',
     lineHeight: 20,
   },
   carouselWrapper: {
@@ -257,19 +247,16 @@ const styles = StyleSheet.create({
     height: 200,
     marginRight: 12,
     borderRadius: 14,
-    backgroundColor: '#1B1B1F',
   },
   carouselMeta: {
     position: 'absolute',
     bottom: 10,
     right: 16,
-    backgroundColor: 'rgba(0,0,0,0.5)',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
   },
   carouselText: {
-    color: '#FFFFFF',
     fontWeight: '700',
   },
   sections: {
@@ -278,27 +265,22 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   sectionCard: {
-    backgroundColor: '#111114',
     borderRadius: 18,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#1F1F24',
   },
   sectionImage: {
     height: 180,
     width: '100%',
-    backgroundColor: '#1B1B1F',
   },
   sectionContent: {
     padding: 14,
     gap: 8,
   },
   sectionTitle: {
-    color: BrandColors.primary,
     fontWeight: '800',
   },
   sectionCopy: {
-    color: '#E6E6E8',
     lineHeight: 19,
   },
 });

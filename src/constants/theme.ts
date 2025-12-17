@@ -8,7 +8,67 @@ import { Platform } from 'react-native';
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
-export const Colors = {
+export const BrandColors = {
+  primary: '#FFEB3B',
+  secondary: '#00D8FF',
+  dark: '#0F0F0F',
+  card: '#1C1C1E',
+  surface: '#22252A',
+  overlay: 'rgba(0,0,0,0.45)',
+  text: '#F4F4F5',
+  mutedText: '#A6A6AA',
+  danger: '#FF5C5C',
+  facebook: '#0D8BF1',
+  google: '#00C8FF',
+  socialBg: '#242424',
+  socialBorderStart: '#44DBE5',
+  socialBorderEnd: '#47FF8E',
+  authBorder: '#a8fc3bff',
+  socialLabelStart: '#FFFF53',
+  socialLabelEnd: '#44DBE5',
+  onPrimary: '#0A0A0A',
+  white: '#FFFFFF',
+};
+
+export type ThemeName = 'light' | 'dark';
+export type ThemePreference = ThemeName | 'system';
+
+type BaseColors = {
+  text: string;
+  background: string;
+  tint: string;
+  icon: string;
+  tabIconDefault: string;
+  tabIconSelected: string;
+};
+
+type UIColors = {
+  screen: string;
+  screenAlt: string;
+  card: string;
+  cardMuted: string;
+  surfaceMuted: string;
+  border: string;
+  borderStrong: string;
+  scrim: string;
+  scrimStrong: string;
+  onBrand: string;
+  onDark: string;
+  mutedText: string;
+  accentPrimary: string;
+  accentSecondary: string;
+  successBg: string;
+  successText: string;
+  errorBg: string;
+  errorText: string;
+  inputBg: string;
+  inputBorder: string;
+  pill: string;
+};
+
+export type ThemeColors = BaseColors & UIColors;
+
+const BasePalette: Record<ThemeName, BaseColors> = {
   light: {
     text: '#11181C',
     background: '#fff',
@@ -27,17 +87,63 @@ export const Colors = {
   },
 };
 
-export const BrandColors = {
-  primary: '#FFEB3B',
-  secondary: '#00D8FF',
-  dark: '#0F0F0F',
-  card: '#1C1C1E',
-  surface: '#22252A',
-  overlay: 'rgba(0,0,0,0.45)',
-  text: '#F4F4F5',
-  mutedText: '#A6A6AA',
-  danger: '#FF5C5C',
+const UIpalette: Record<ThemeName, UIColors> = {
+  light: {
+    screen: '#FFFFFF',
+    screenAlt: '#F5F5F7',
+    card: '#FFFFFF',
+    cardMuted: '#F5F6F8',
+    surfaceMuted: '#EFEFF1',
+    border: 'rgba(0,0,0,0.08)',
+    borderStrong: 'rgba(0,0,0,0.14)',
+    scrim: 'rgba(0,0,0,0.35)',
+    scrimStrong: 'rgba(0,0,0,0.55)',
+    onBrand: '#0A0A0A',
+    onDark: '#FFFFFF',
+    mutedText: '#6F7075',
+    accentPrimary: BrandColors.primary,
+    accentSecondary: BrandColors.secondary,
+    successBg: '#0BBF63',
+    successText: '#04160D',
+    errorBg: '#FF5C5C',
+    errorText: '#1A0A0A',
+    inputBg: '#F2F2F3',
+    inputBorder: '#CCCCCC',
+    pill: 'rgba(0,0,0,0.08)',
+  },
+  dark: {
+    screen: '#0A0A0B',
+    screenAlt: '#111114',
+    card: '#111114',
+    cardMuted: '#1B1B1F',
+    surfaceMuted: '#1B1B1F',
+    border: 'rgba(255,255,255,0.1)',
+    borderStrong: 'rgba(255,255,255,0.14)',
+    scrim: 'rgba(0,0,0,0.45)',
+    scrimStrong: 'rgba(0,0,0,0.6)',
+    onBrand: '#0A0A0A',
+    onDark: '#FFFFFF',
+    mutedText: '#A6A6AA',
+    accentPrimary: BrandColors.primary,
+    accentSecondary: BrandColors.secondary,
+    successBg: '#0BBF63',
+    successText: '#04160D',
+    errorBg: '#FF5C5C',
+    errorText: '#1A0A0A',
+    inputBg: '#1A1A1D',
+    inputBorder: '#FFFFFF',
+    pill: 'rgba(255,255,255,0.12)',
+  },
 };
+
+export const Colors: Record<ThemeName, ThemeColors> = {
+  light: { ...BasePalette.light, ...UIpalette.light },
+  dark: { ...BasePalette.dark, ...UIpalette.dark },
+};
+
+export function getThemeColors(theme: ThemeName): ThemeColors {
+  return Colors[theme];
+}
 
 export const Fonts = Platform.select({
   ios: {

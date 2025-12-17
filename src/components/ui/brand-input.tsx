@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 
-import { BrandColors } from '@/src/constants/theme';
+import { useTheme } from '@/src/hooks/use-theme';
 import { ThemedText } from '../themed-text';
 
 type Props = TextInputProps & {
@@ -9,12 +9,13 @@ type Props = TextInputProps & {
 };
 
 export function BrandInput({ label, ...rest }: Props) {
+  const { colors } = useTheme();
   return (
     <View style={styles.wrapper}>
-      {label ? <ThemedText size={13} style={styles.label}>{label}</ThemedText> : null}
+      {label ? <ThemedText size={13} style={[styles.label, { color: colors.mutedText }]}>{label}</ThemedText> : null}
       <TextInput
-        placeholderTextColor={BrandColors.mutedText}
-        style={[styles.input]}
+        placeholderTextColor={colors.mutedText}
+        style={[styles.input, { backgroundColor: colors.inputBg, borderColor: colors.inputBorder, color: colors.text ,fontFamily: 'InterMedium',fontSize:16}]}
         {...rest}
       />
     </View>
@@ -27,7 +28,6 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    color: BrandColors.text,
     fontWeight: '600',
   },
   input: {
@@ -35,9 +35,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 14,
     borderWidth: 2,
-    borderColor: '#FFFFFF',
-    backgroundColor: '#1A1A1D',
-    color: BrandColors.text,
     letterSpacing: 0.2,
   },
 });

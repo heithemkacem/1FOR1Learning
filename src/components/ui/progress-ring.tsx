@@ -4,6 +4,7 @@ import Animated, { useAnimatedProps, useSharedValue, withTiming } from 'react-na
 import Svg, { Circle } from 'react-native-svg';
 
 import { BrandColors } from '@/src/constants/theme';
+import { useTheme } from '@/src/hooks/use-theme';
 import { ThemedText } from '../themed-text';
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export function ProgressRing({ size = 180, strokeWidth = 10, progress, label }: Props) {
+  const { colors } = useTheme();
   const clamped = Math.min(100, Math.max(0, progress));
   const animated = useSharedValue(clamped);
   const radius = (size - strokeWidth) / 2;
@@ -56,8 +58,8 @@ export function ProgressRing({ size = 180, strokeWidth = 10, progress, label }: 
         />
       </Svg>
       <View style={styles.labelContainer}>
-        <ThemedText size={24} style={styles.percentage}>{`${clamped}%`}</ThemedText>
-        {label ? <ThemedText size={13} style={styles.caption}>{label}</ThemedText> : null}
+        <ThemedText size={24} style={[styles.percentage, { color: colors.onBrand }]}>{`${clamped}%`}</ThemedText>
+        {label ? <ThemedText size={13} style={[styles.caption, { color: colors.onBrand }]}>{label}</ThemedText> : null}
       </View>
     </View>
   );
@@ -74,11 +76,9 @@ const styles = StyleSheet.create({
   },
   percentage: {
     fontWeight: '800',
-    color: '#0A0A0A',
   },
   caption: {
     marginTop: 6,
     fontWeight: '700',
-    color: '#0A0A0A',
   },
 });

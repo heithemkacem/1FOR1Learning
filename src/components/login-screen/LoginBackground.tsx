@@ -5,20 +5,22 @@ import Svg, { Defs, LinearGradient, Rect, Stop, SvgXml } from 'react-native-svg'
 import BackgroundImage from '@/src/assets/images/background/Background.png';
 import { LanguageIcon } from '@/src/assets/images/icons/LanguageIcon';
 import { ThemedText } from '@/src/components/themed-text';
+import { useTheme } from '@/src/hooks/use-theme';
 
 type Props = {
   whiteLogoXml: string;
 };
 
 export function LoginBackground({ whiteLogoXml }: Props) {
+  const { colors } = useTheme();
   return (
     <ImageBackground source={BackgroundImage} style={styles.hero} imageStyle={styles.heroImage}>
       <View style={styles.heroHeader}>
-        <ThemedText size={24} style={styles.slogan} lightColor="#EDEDED" darkColor="#EDEDED">
+        <ThemedText size={24} style={[styles.slogan, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark} type='extraBold'>
           Welcome to
         </ThemedText>
         <SvgXml xml={whiteLogoXml} width={styles.logo.width} height={styles.logo.height} />
-        <ThemedText size={24} style={styles.subtitle} lightColor="#EDEDED" darkColor="#EDEDED">
+        <ThemedText size={24} style={[styles.subtitle, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark} type='extraBold'>
           Learn 1FOR1 your way
         </ThemedText>
       </View>
@@ -27,13 +29,13 @@ export function LoginBackground({ whiteLogoXml }: Props) {
         <Svg pointerEvents="none" style={styles.languageBorder} width={44} height={44} viewBox="0 0 44 44" fill="none">
           <Defs>
             <LinearGradient id="langGradient" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
-              <Stop offset="0" stopColor="#FFFFFF" />
-              <Stop offset="1" stopColor="#F3FF47" />
+              <Stop offset="0" stopColor={colors.onDark} />
+              <Stop offset="1" stopColor={colors.accentPrimary} />
             </LinearGradient>
           </Defs>
           <Rect x="0.5" y="0.5" width="43" height="43" rx="22" stroke="url(#langGradient)" fill="none" />
         </Svg>
-        <LanguageIcon />
+        <LanguageIcon color={colors.onDark} />
       </Pressable>
     </ImageBackground>
   );
@@ -42,7 +44,7 @@ export function LoginBackground({ whiteLogoXml }: Props) {
 const styles = StyleSheet.create({
   hero: {
     marginTop: 10,
-    height: 290,
+    height: 270,
     padding: 20,
     borderRadius: 30,
     overflow: 'hidden',
@@ -64,13 +66,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   slogan: {
-    color: '#EDEDED',
-    fontFamily: 'InterExtraBoldItalic',
     textAlign: 'center',
   },
   subtitle: {
-    color: '#EDEDED',
-    fontFamily: 'InterExtraBoldItalic',
     textAlign: 'center',
   },
   logo: {

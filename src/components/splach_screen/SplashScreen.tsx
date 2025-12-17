@@ -2,12 +2,10 @@ import { useAuth } from '@clerk/clerk-expo';
 import { useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { Animated, Easing, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 
 import { logo1for1Xml } from '@/src/assets/images/logo1for1Xml';
-import { ThemedView } from '@/src/components/themed-view';
-import { BrandColors } from '@/src/constants/theme';
+import { ThemedScreen } from '@/src/components/themed-screen';
 
 const logoXml = logo1for1Xml;
 
@@ -40,20 +38,17 @@ export default function SplashScreen() {
   }, [isSignedIn, router, opacity, scale, translateY]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ThemedView style={styles.container} lightColor={BrandColors.primary} darkColor={BrandColors.primary}>
-        <Animated.View
-          style={[styles.logoContainer, { opacity, transform: [{ translateY }, { scale }] }]}
-        >
-          <SvgXml xml={logoXml} width={styles.logo.width} height={styles.logo.height} />
-        </Animated.View>
-      </ThemedView>
-    </SafeAreaView>
+    <ThemedScreen colorName="accentPrimary" style={styles.container}>
+      <Animated.View
+        style={[styles.logoContainer, { opacity, transform: [{ translateY }, { scale }] }]}
+      >
+        <SvgXml xml={logoXml} width={styles.logo.width} height={styles.logo.height} />
+      </Animated.View>
+    </ThemedScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: BrandColors.primary },
   container: {
     flex: 1,
     alignItems: 'center',
