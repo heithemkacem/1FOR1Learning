@@ -180,12 +180,11 @@ index.tsx (Splash) → login.tsx → [Clerk Auth] → loading.tsx → discover.t
 | Phase | Durée estimée |
 |-------|---------------|
 | Configuration initiale (Expo, TypeScript) | 1h |
-| Intégration Clerk + OAuth | 3h |
-| UI/UX (écrans, composants) | 4h |
+| Intégration Clerk + OAuth | 1h |
+| UI/UX (écrans, composants) | 3h |
 | Gestion des thèmes (dark/light) | 1h |
-| Tests et debugging | 2h |
 | Documentation | 30min |
-| **Total** | **~11h30** |
+| **Total** | **~6h:30** |
 
 ---
 
