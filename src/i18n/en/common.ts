@@ -1,6 +1,11 @@
 export default {
   welcome: 'Welcome to',
   learnYourWay: 'Learn 1FOR1 your way',
+  hero: {
+    discover: 'Discover',
+    tunisian: 'Tunisian',
+    traditions: 'traditions',
+  },
   login: {
     emailAddress: 'Email address',
     phone: 'Phone',

@@ -51,13 +51,14 @@ const DiscoverSection: React.FC<DiscoverSectionProps> = ({
               player={player}
               allowsPictureInPicture
               contentFit="contain"
+              
             />
           ) : (
             <TouchableOpacity style={styles.coverButton} onPress={handlePlay}>
               {imageSource && (
                 <ImageBackground source={imageSource} style={styles.cover} imageStyle={styles.coverImage}>
                   <View style={styles.playBadge}>
-                    <ThemedText style={[styles.playText, { color: '#FFFFFF' }]}>▶</ThemedText>
+                    <ThemedText size={24} style={[ { color: '#FFFFFF' }]}>▶</ThemedText>
                   </View>
                 </ImageBackground>
               )}
@@ -75,8 +76,8 @@ const DiscoverSection: React.FC<DiscoverSectionProps> = ({
           </ThemedText>
            {hasLike && likes && (
             <View style={styles.likesContainer}>
-              <LikeIcon size={scale(18)} color="#FFFFFF" />
-              <ThemedText style={[styles.likesText, { color: '#FFFFFF' }]}>
+              <LikeIcon size={scale(18)} color={colors.text} />
+              <ThemedText type='medium' style={[ { color: colors.text }]}>
                 {likes}
               </ThemedText>
             </View>
@@ -144,10 +145,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  playText: {
-    fontSize: scaleFont(24),
-    fontWeight: '700',
-  },
+ 
   likesContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -155,10 +153,7 @@ const styles = StyleSheet.create({
     paddingVertical: scale(6),
     borderRadius: scale(20),
   },
-  likesText: {
-    fontSize: scaleFont(14),
-    fontWeight: '500',
-  },
+ 
 });
 
 export default DiscoverSection;

@@ -30,7 +30,7 @@ export default function LoginScreen() {
   const handleSubmit = showVerify ? handleVerifyCode : handleRequestCode;
 
   return (
-    <ThemedScreen style={styles.safeArea}>
+    <ThemedScreen colorName="background" style={styles.safeArea}>
     
       <ScrollView contentContainerStyle={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
         <LoginBackground whiteLogoXml={whiteLogoXml} />

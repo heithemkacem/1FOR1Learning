@@ -82,7 +82,7 @@ const BasePalette: Record<ThemeName, BaseColors> = {
   },
   dark: {
     text: '#ECEDEE',
-    background: '#242424',
+    background: '#212121',
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',

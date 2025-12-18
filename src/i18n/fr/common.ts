@@ -1,6 +1,11 @@
 export default {
   welcome: 'Bienvenue sur',
   learnYourWay: 'Apprenez 1FOR1 à votre façon',
+  hero: {
+    discover: 'Découvrir',
+    tunisian: 'traditions',
+    traditions: 'Tunisienne',
+  },
   login: {
     emailAddress: 'Adresse e-mail',
     phone: 'Téléphone',

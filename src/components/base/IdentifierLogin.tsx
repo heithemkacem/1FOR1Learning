@@ -43,7 +43,7 @@ export function IdentifierLogin({
             <View
               style={[
                 styles.radioOuter,
-                { borderColor: colors.inputBorder, backgroundColor: colors.screen },
+                { borderColor: colors.inputBorder,  },
                 mode === 'email' ? styles.radioOuterActive : null,
               ]}>
               {mode === 'email' ? <View style={[styles.radioInner, { backgroundColor: colors.accentSecondary }]} /> : null}
@@ -56,7 +56,7 @@ export function IdentifierLogin({
             <View
               style={[
                 styles.radioOuter,
-                { borderColor: colors.inputBorder, backgroundColor: colors.screen },
+                { borderColor: colors.inputBorder, },
                 mode === 'phone' ? styles.radioOuterActive : null,
               ]}>
               {mode === 'phone' ? <View style={[styles.radioInner, { backgroundColor: colors.accentSecondary }]} /> : null}

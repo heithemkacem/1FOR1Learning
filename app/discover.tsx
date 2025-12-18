@@ -67,12 +67,13 @@ export default function DiscoverScreen() {
 }
 
 import { DiscoverSection, HeroSection } from '@/src/components/base';
+import { ThemedText } from '@/src/components/global';
 import { ThemedScreen } from '@/src/components/global/themed-screen';
-import { Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 const LogoutButton = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} style={{ padding: 10, backgroundColor: '#E53935', borderRadius: 8 }}>
-    <Text style={{ color: '#fff', fontWeight: 'bold' }}>Logout</Text>
+    <ThemedText type='medium' style={{ color: '#fff' }}>Logout</ThemedText>
   </TouchableOpacity>
 );
 

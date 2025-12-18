@@ -4,6 +4,8 @@ import { ImageBackground, ImageSourcePropType, StyleSheet, TouchableOpacity, Vie
 
 import { LikeIcon } from '@/src/assets/images/icons/LikeIcon';
 import { TunisiaFlag } from '@/src/assets/images/icons/TunisiaFlag';
+import { useI18n } from '@/src/hooks/use-i18n';
+import { useTheme } from '@/src/hooks/use-theme';
 import { scale, scaleFont } from '@/src/utils/scaler';
 import { ThemedText } from '../global';
 
@@ -12,10 +14,15 @@ type HeroSectionProps = {
 };
 
 const HeroSection: React.FC<HeroSectionProps> = ({ imageSource }) => {
+  const { t } = useI18n();
+  const { isLight } = useTheme();
+  const gradientColors: readonly [string, string] = isLight
+    ? (['rgba(255,255,255,0)', 'rgba(255,255,255,1)'] as const)
+    : (['rgba(0,0,0,0)', 'rgba(0,0,0,1)'] as const);
   return (
     <ImageBackground source={imageSource} style={styles.hero} imageStyle={styles.heroImage}>
       <LinearGradient
-        colors={["rgba(0,0,0,0)", "rgba(0,0,0,1)"]}
+        colors={gradientColors}
         style={StyleSheet.absoluteFill}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
@@ -28,9 +35,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ imageSource }) => {
       </View>
       <View style={styles.titleBlock}>
         <TunisiaFlag size={scale(120)} />
-        <ThemedText style={[styles.heroTitle, { color: '#FFFFFF' }]}>Discover</ThemedText>
-        <ThemedText style={[styles.heroTitle, { color: '#FFFFFF' }]}>Tunisian</ThemedText>
-        <ThemedText style={[styles.heroTitle, { color: '#FFFFFF' }]}>traditions</ThemedText>
+        <ThemedText size={40} type='bold' style={[ { color: '#FFFFFF' }]}>{t('hero.discover')}</ThemedText>
+        <ThemedText size={40} type='bold' style={[ { color: '#FFFFFF' }]}>{t('hero.tunisian')}</ThemedText>
+        <ThemedText size={40} type='bold' style={[ { color: '#FFFFFF' }]}>{t('hero.traditions')}</ThemedText>
       </View>
     </ImageBackground>
   );
@@ -71,8 +78,6 @@ const styles = StyleSheet.create({
     marginTop: scale(-40),
   },
   heroTitle: {
-    fontSize: scaleFont(36),
-    fontWeight: '700',
     textAlign: 'center',
     lineHeight: scaleFont(44),
   },
