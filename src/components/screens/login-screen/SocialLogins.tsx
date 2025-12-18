@@ -5,16 +5,18 @@ import { FacebookIcon } from '@/src/assets/images/icons/FacebookIcon';
 import { GoogleIcon } from '@/src/assets/images/icons/GoogleIcon';
 import { BrandButton } from '@/src/components/ui/brand-button';
 import { BrandColors } from '@/src/constants/theme';
+import { useI18n } from '@/src/hooks/use-i18n';
 
 type Props = {
   onOAuth: (provider: 'facebook' | 'google') => void;
 };
 
 export function SocialLogins({ onOAuth }: Props) {
+  const { t } = useI18n();
   return (
     <View style={styles.container}>
       <BrandButton
-        label="Continue with Facebook"
+        label={t('login.continueWithFacebook')}
         variant="facebook"
         onPress={() => onOAuth('facebook')}
         leftIcon={<FacebookIcon />}
@@ -27,7 +29,7 @@ export function SocialLogins({ onOAuth }: Props) {
         labelGradientEnd={{ x: 1, y: 0.5 }}
       />
       <BrandButton
-        label="Continue with Google"
+        label={t('login.continueWithGoogle')}
         variant="google"
         onPress={() => onOAuth('google')}
         leftIcon={<GoogleIcon />}

@@ -5,6 +5,7 @@ import Svg, { Defs, LinearGradient, Rect, Stop, SvgXml } from 'react-native-svg'
 import BackgroundImage from '@/src/assets/images/background/Background.png';
 import { LanguageIcon } from '@/src/assets/images/icons/LanguageIcon';
 import { ThemedText } from '@/src/components/themed-text';
+import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
 
 type Props = {
@@ -13,19 +14,21 @@ type Props = {
 
 export function LoginBackground({ whiteLogoXml }: Props) {
   const { colors } = useTheme();
+  const { t, toggleLanguage } = useI18n();
+
   return (
     <ImageBackground source={BackgroundImage} style={styles.hero} imageStyle={styles.heroImage}>
       <View style={styles.heroHeader}>
         <ThemedText size={24} style={[styles.slogan, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark} type='extraBold'>
-          Welcome to
+          {t('welcome')}
         </ThemedText>
         <SvgXml xml={whiteLogoXml} width={styles.logo.width} height={styles.logo.height} />
         <ThemedText size={24} style={[styles.subtitle, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark} type='extraBold'>
-          Learn 1FOR1 your way
+          {t('learnYourWay')}
         </ThemedText>
       </View>
 
-      <Pressable style={styles.languageToggle}>
+      <Pressable style={styles.languageToggle} onPress={toggleLanguage}>
         <Svg pointerEvents="none" style={styles.languageBorder} width={44} height={44} viewBox="0 0 44 44" fill="none">
           <Defs>
             <LinearGradient id="langGradient" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">

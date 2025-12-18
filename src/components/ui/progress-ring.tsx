@@ -65,7 +65,7 @@ export function ProgressRing({ size = 180, strokeWidth = 10, progress, label }: 
         />
       </Svg>
       <View style={styles.labelContainer}>
-        <ThemedText type='bold' size={20} style={[styles.percentage, { color: colors.onBrand }]}>{`${clamped}%`}</ThemedText>
+        <ThemedText type='bold' size={20} style={[ { color: colors.onBrand }]}>{`${clamped}%`}</ThemedText>
         {label ? <ThemedText size={13} style={[styles.caption, { color: colors.onBrand }]}>{label}</ThemedText> : null}
       </View>
     </View>
@@ -81,11 +81,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
   },
-  percentage: {
-    fontWeight: '800',
-  },
+
   caption: {
     marginTop: 6,
-    fontWeight: '700',
   },
 });

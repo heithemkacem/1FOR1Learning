@@ -1,6 +1,7 @@
 import { StyleSheet, Text, type TextProps } from 'react-native';
 
 import { useThemeColor } from '@/src/hooks/use-theme-color';
+import { scaleFont } from '../utils/scaler';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
@@ -42,7 +43,7 @@ export function ThemedText({
   return (
     <Text
       style={[
-        { color, fontSize: size },
+        { color, fontSize: scaleFont(size) },
         fontStyles[type],
         style,
       ]}

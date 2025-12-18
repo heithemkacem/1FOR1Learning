@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useSnackBar } from '@/src/components/ui/snackbar';
+import i18n from '@/src/i18n';
 
 type Mode = 'email' | 'phone';
 
@@ -69,7 +70,7 @@ export function useClerkAuth() {
   const handleRequestCode = useCallback(async () => {
     if (!isLoaded) return;
     if (!identifier.trim()) {
-      const message = mode === 'email' ? 'Enter your email address' : 'Enter your phone number';
+      const message = mode === 'email' ? i18n.t('errors.enterEmail') : i18n.t('errors.enterPhone');
       setError(message);
       showSnack({ message, variant: 'error' });
       return;
@@ -85,7 +86,7 @@ export function useClerkAuth() {
       const factor = signInAttempt?.supportedFirstFactors?.find((f) => f.strategy === strategy);
 
       if (!factor) {
-        throw new Error(`No ${mode} verification method available for this account.`);
+        throw new Error(i18n.t('errors.noVerificationMethod', { mode }));
       }
 
       if (strategy === 'email_code' && 'emailAddressId' in factor) {
@@ -96,7 +97,7 @@ export function useClerkAuth() {
 
       setVerification({ step: 'verify', strategy });
     } catch (err: any) {
-      const message = err?.errors?.[0]?.message ?? 'Unable to start sign-in. Please try again.';
+      const message = err?.errors?.[0]?.message ?? i18n.t('errors.unableToSignIn');
       setError(message);
       showSnack({ message, variant: 'error' });
     } finally {
@@ -107,7 +108,7 @@ export function useClerkAuth() {
   const handleVerifyCode = useCallback(async () => {
     if (!isLoaded) return;
     if (!code.trim()) {
-      const message = 'Enter the verification code';
+      const message = i18n.t('errors.enterCode');
       setError(message);
       showSnack({ message, variant: 'error' });
       return;
@@ -121,12 +122,12 @@ export function useClerkAuth() {
         await setActive?.({ session: result.createdSessionId });
         router.replace('/loading');
       } else {
-        const message = 'Check the code and try again.';
+        const message = i18n.t('errors.checkCode');
         setError(message);
         showSnack({ message, variant: 'error' });
       }
     } catch (err: any) {
-      const message = err?.errors?.[0]?.message ?? 'Invalid or expired code. Request a new one.';
+      const message = err?.errors?.[0]?.message ?? i18n.t('errors.invalidCode');
       setError(message);
       showSnack({ message, variant: 'error' });
     } finally {
@@ -161,17 +162,17 @@ export function useClerkAuth() {
 
         // If Clerk needs additional steps, surface a clearer message
         if (oAuthSignIn?.status === 'needs_first_factor' || oAuthSignUp?.status === 'missing_requirements') {
-          const message = 'Additional verification required. Complete the step in browser, then try again.';
+          const message = i18n.t('errors.additionalVerification');
           setError(message);
           showSnack({ message, variant: 'error' });
           return;
         }
 
-        const message = 'Social login did not return a session. Verify the redirect URL is whitelisted and retry.';
+        const message = i18n.t('errors.socialLoginNoSession');
         setError(message);
         showSnack({ message, variant: 'error' });
       } catch (err) {
-        const message = (err as any)?.errors?.[0]?.message ?? 'Social login failed. Please try again.';
+        const message = (err as any)?.errors?.[0]?.message ?? i18n.t('errors.socialLoginFailed');
         setError(message);
         showSnack({ message, variant: 'error' });
       } finally {

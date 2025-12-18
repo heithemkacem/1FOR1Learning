@@ -1,50 +1,207 @@
-# Welcome to your Expo app 👋
+# 1FOR1 Learning 📚
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Application mobile d'apprentissage développée avec React Native et Expo.
 
-## Get started
+---
 
-1. Install dependencies
+## ✨ Fonctionnalités
 
+### 🔐 Authentification Clerk
+
+L'application utilise **Clerk** comme solution d'authentification complète :
+
+- **Connexion par Email/Téléphone** : Authentification via code de vérification OTP
+- **OAuth Social** : Connexion avec Google et Facebook
+- **Gestion de session sécurisée** : Tokens stockés via `expo-secure-store`
+- **Protection des routes** : Redirection automatique selon l'état d'authentification
+
+---
+
+## 🚀 Instructions d'installation et de lancement
+
+### Prérequis
+
+- Node.js (v18+)
+- Yarn ou npm
+- Expo CLI
+- Android Studio (pour émulateur Android) ou Xcode (pour simulateur iOS)
+
+### Installation
+
+1. **Cloner le projet**
    ```bash
+   git clone <repository-url>
+   cd 1FOR1Learning
+   ```
+
+2. **Installer les dépendances**
+   ```bash
+   yarn install
+   # ou
    npm install
    ```
 
-2. Start the app
-
-   ```bash
-   npx expo start
+3. **Configuration des variables d'environnement**
+   
+   Créer un fichier `.env` à la racine du projet :
+   ```env
+   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_key
    ```
 
-In the output, you'll find options to open the app in a
+4. **Lancer l'application**
+   ```bash
+   # Mode développement
+   npm start
+   
+   # Android
+   npm android
+   
+   # iOS
+   npm ios
+   
+   # Web
+   npm web
+   ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### Build de production (EAS)
 
 ```bash
-npm run reset-project
+# Build Android
+eas build --platform android --profile development
+
+# Build iOS
+eas build --platform ios --profile development
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🛠 Technologies utilisées
 
-To learn more about developing your project with Expo, look at the following resources:
+| Catégorie | Technologies |
+|-----------|--------------|
+| **Framework** | React Native 0.81.5, Expo SDK 54 |
+| **Langage** | TypeScript 5.9 |
+| **Routing** | Expo Router (file-based routing) |
+| **Authentification** | Clerk (`@clerk/clerk-expo`) |
+| **State Management** | TanStack React Query |
+| **Navigation** | React Navigation v7 |
+| **Animations** | React Native Reanimated 4.1 |
+| **UI/Styling** | React Native SVG, Expo Linear Gradient |
+| **Stockage sécurisé** | Expo Secure Store |
+| **Linting** | ESLint avec config Expo |
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 📁 Architecture du projet
 
-Join our community of developers creating universal apps.
+```
+1FOR1Learning/
+├── app/                          # Routes (file-based routing)
+│   ├── _layout.tsx               # Layout principal + providers
+│   ├── index.tsx                 # Splash screen
+│   ├── login.tsx                 # Écran de connexion
+│   ├── loading.tsx               # Écran de chargement post-auth
+│   ├── discover.tsx              # Page découverte
+│   └── oauth-native-callback.tsx # Callback OAuth
+│
+├── src/
+│   ├── assets/                   # Ressources statiques
+│   │   ├── fonts/                # Polices Inter
+│   │   └── images/               # Images, logos, icônes
+│   │
+│   ├── components/               # Composants React
+│   │   ├── screens/              # Composants par écran
+│   │   │   ├── login-screen/     # Composants login
+│   │   │   ├── loading-screen/   # Composants loading
+│   │   │   └── splach_screen/    # Composants splash
+│   │   └── ui/                   # Composants UI réutilisables
+│   │       ├── brand-button.tsx
+│   │       ├── brand-input.tsx
+│   │       ├── progress-ring.tsx
+│   │       └── snackbar.tsx
+│   │
+│   ├── constants/                # Constantes (thème, couleurs)
+│   │   └── theme.ts
+│   │
+│   └── hooks/                    # Custom hooks
+│       ├── useClerkAuth.ts       # Hook authentification Clerk
+│       ├── use-theme.ts          # Gestion du thème
+│       └── use-color-scheme.ts   # Détection mode sombre
+│
+├── app.json                      # Configuration Expo
+├── eas.json                      # Configuration EAS Build
+├── tsconfig.json                 # Configuration TypeScript
+└── package.json                  # Dépendances
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Flux d'authentification
+
+```
+index.tsx (Splash) → login.tsx → [Clerk Auth] → loading.tsx → discover.tsx
+                          ↓
+              oauth-native-callback.tsx (OAuth redirect)
+```
+
+---
+
+## ⚠️ Difficultés rencontrées et solutions apportées
+
+### 1. Configuration OAuth avec Clerk
+
+**Problème** : Les redirections OAuth (Google/Facebook) ne fonctionnaient pas correctement sur mobile natif.
+
+**Solution** : 
+- Utilisation de `makeRedirectUri` d'Expo Auth Session avec un scheme personnalisé
+- Configuration du callback `oauth-native-callback.tsx` pour gérer le retour OAuth
+- Whitelist des URLs de redirection dans le dashboard Clerk
+
+### 2. Gestion des tokens sécurisés
+
+**Problème** : Persistance des sessions utilisateur entre les redémarrages de l'app.
+
+**Solution** : Implémentation d'un `tokenCache` personnalisé utilisant `expo-secure-store` pour stocker les tokens de manière sécurisée.
+
+### 3. Animations fluides
+
+**Problème** : Performance des animations sur les appareils bas de gamme.
+
+**Solution** : Utilisation de `react-native-reanimated` avec des animations sur le thread UI natif.
+
+### 4. Gestion des états de vérification
+
+**Problème** : Complexité du flow OTP (email_code/phone_code) avec différentes stratégies.
+
+**Solution** : Hook `useClerkAuth` centralisé gérant tous les états et transitions de l'authentification.
+
+---
+
+## ⏱ Temps passé sur le projet
+
+| Phase | Durée estimée |
+|-------|---------------|
+| Configuration initiale (Expo, TypeScript) | 1h |
+| Intégration Clerk + OAuth | 3h |
+| UI/UX (écrans, composants) | 4h |
+| Gestion des thèmes (dark/light) | 1h |
+| Tests et debugging | 2h |
+| Documentation | 30min |
+| **Total** | **~11h30** |
+
+---
+
+## 📚 Ressources
+
+- [Documentation Expo](https://docs.expo.dev/)
+- [Documentation Clerk](https://clerk.com/docs)
+- [Expo Router](https://docs.expo.dev/router/introduction/)
+- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
+
+---
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Commit les changements (`git commit -m 'Ajout nouvelle fonctionnalité'`)
+4. Push sur la branche (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrir une Pull Request

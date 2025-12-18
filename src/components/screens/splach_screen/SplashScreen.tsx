@@ -63,23 +63,10 @@ const styles = StyleSheet.create({
     height: 176,
     resizeMode: 'contain',
   },
-  logoTop: {
-    fontWeight: '900',
-    letterSpacing: 1.2,
-    color: '#0A0A0A',
-  },
-  logoBottom: {
-    marginTop: -4,
-    fontWeight: '700',
-    fontStyle: 'italic',
-    color: '#0A0A0A',
-  },
+ 
   footer: {
     alignItems: 'center',
     gap: 10,
   },
-  caption: {
-    fontWeight: '700',
-    color: '#0A0A0A',
-  },
+
 });

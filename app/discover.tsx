@@ -9,6 +9,7 @@ import { ThemedScreen } from '@/src/components/themed-screen';
 import { ThemedText } from '@/src/components/themed-text';
 import { ThemedView } from '@/src/components/themed-view';
 import { BrandButton } from '@/src/components/ui/brand-button';
+import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
 
 type DiscoverData = {
@@ -59,6 +60,7 @@ export default function DiscoverScreen() {
   const router = useRouter();
   const { signOut } = useAuth();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const [activeSlide, setActiveSlide] = useState(0);
   const { width } = useWindowDimensions();
 
@@ -91,30 +93,30 @@ export default function DiscoverScreen() {
         <View style={styles.headerRow}>
           <View style={styles.flagRow}>
             <Image source={{ uri: data.flag }} style={[styles.flag, { backgroundColor: colors.onDark }]} />
-            <ThemedText size={16} style={[styles.flagText, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-              Tunisia
+            <ThemedText size={16} style={[{ color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
+              {t('discover.tunisia')}
             </ThemedText>
           </View>
-          <BrandButton label="Logout" variant="ghost" onPress={handleLogout} />
+          <BrandButton label={t('login.logout')} variant="ghost" onPress={handleLogout} />
         </View>
 
         <View style={styles.titleBlock}>
-          <ThemedText size={30} style={[styles.title, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-            Discover
+          <ThemedText size={30} style={[ { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
+            {t('discover.title')}
           </ThemedText>
-          <ThemedText size={30} style={[styles.title, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-            Tunisian traditions
+          <ThemedText size={30} style={[ { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
+            {t('discover.tunisianTraditions')}
           </ThemedText>
         </View>
 
         <ThemedView style={[styles.card, { borderColor: colors.border }]} lightColor={colors.card} darkColor={colors.card}>
           <View style={styles.cardHeader}>
-            <ThemedText size={18} style={[styles.cardTitle, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-              Tunisia
+            <ThemedText size={18} style={[ { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
+              {t('discover.tunisia')}
             </ThemedText>
             <View style={[styles.likes, { backgroundColor: colors.pill }]}> 
               <Ionicons name="heart" size={16} color={colors.accentPrimary} />
-              <ThemedText style={[styles.likesText, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
+              <ThemedText style={[ { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
                 {data.likes}
               </ThemedText>
             </View>
@@ -138,7 +140,7 @@ export default function DiscoverScreen() {
             snapToInterval={slideWidth + 12}
           />
           <View style={[styles.carouselMeta, { backgroundColor: colors.scrimStrong }]}>
-            <ThemedText style={[styles.carouselText, { color: colors.onDark }]}>{`${activeSlide + 1}/${slides.length}`}</ThemedText>
+            <ThemedText style={[ { color: colors.onDark }]}>{`${activeSlide + 1}/${slides.length}`}</ThemedText>
           </View>
         </View>
       </ImageBackground>
@@ -180,16 +182,12 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
   },
-  flagText: {
-    fontWeight: '800',
-  },
+
   titleBlock: {
     marginTop: 40,
     gap: -2,
   },
-  title: {
-    fontWeight: '900',
-  },
+
   card: {
     marginTop: 22,
     borderRadius: 18,
@@ -202,9 +200,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  cardTitle: {
-    fontWeight: '800',
-  },
+
   likes: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -213,9 +209,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 20,
   },
-  likesText: {
-    fontWeight: '700',
-  },
+
   cardCopy: {
     lineHeight: 20,
   },
@@ -238,9 +232,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 12,
   },
-  carouselText: {
-    fontWeight: '700',
-  },
+ 
   sections: {
     paddingHorizontal: 16,
     paddingVertical: 18,
@@ -259,9 +251,7 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 8,
   },
-  sectionTitle: {
-    fontWeight: '800',
-  },
+ 
   sectionCopy: {
     lineHeight: 19,
   },

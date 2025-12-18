@@ -4,12 +4,39 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import 'react-native-reanimated';
 
+import { OfflineScreen } from '@/src/components/ui/offline-screen';
 import { SnackBarProvider } from '@/src/components/ui/snackbar';
 import { useColorScheme } from '@/src/hooks/use-color-scheme';
+import { I18nProvider } from '@/src/hooks/use-i18n';
+import { NetworkProvider, useNetwork } from '@/src/hooks/use-network';
 import { AppThemeProvider } from '@/src/hooks/use-theme';
+
+function AppContent() {
+  const { isConnected, checkConnection } = useNetwork();
+
+  if (!isConnected) {
+    return <OfflineScreen onRetry={checkConnection} />;
+  }
+
+  return (
+    <Stack
+      initialRouteName="index"
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+        animationDuration: 300,
+      }}
+    >
+      <Stack.Screen name="index" options={{ animation: 'fade' }} />
+      <Stack.Screen name="login" options={{ animation: 'simple_push' }} />
+      <Stack.Screen name="loading" options={{ animation: 'fade' }} />
+      <Stack.Screen name="discover" options={{ animation: 'slide_from_left' }} />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -59,27 +86,19 @@ export default function RootLayout() {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <QueryClientProvider client={queryClient}>
-        <AppThemeProvider>
-          <NavigationThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <ClerkLoaded>
-              <SnackBarProvider>
-                <Stack
-                  initialRouteName="index"
-                  screenOptions={{
-                    headerShown: false,
-                    animation: 'slide_from_right',
-                    animationDuration: 300,
-                  }}
-                >
-                  <Stack.Screen name="index" options={{ animation: 'fade' }} />
-                  <Stack.Screen name="login" options={{ animation: 'simple_push' }} />
-                  <Stack.Screen name="loading" options={{ animation: 'fade' }} />
-                  <Stack.Screen name="discover" options={{ animation: 'slide_from_left' }} />
-                </Stack>
-              </SnackBarProvider>
-            </ClerkLoaded>
-          </NavigationThemeProvider>
-        </AppThemeProvider>
+        <NetworkProvider>
+          <I18nProvider>
+            <AppThemeProvider>
+              <NavigationThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <ClerkLoaded>
+                  <SnackBarProvider>
+                    <AppContent />
+                  </SnackBarProvider>
+                </ClerkLoaded>
+              </NavigationThemeProvider>
+            </AppThemeProvider>
+          </I18nProvider>
+        </NetworkProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );

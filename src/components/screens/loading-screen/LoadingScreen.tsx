@@ -6,11 +6,13 @@ import { ThemedScreen } from '@/src/components/themed-screen';
 import { ThemedText } from '@/src/components/themed-text';
 import { ThemedView } from '@/src/components/themed-view';
 import { ProgressRing } from '@/src/components/ui/progress-ring';
+import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
 
 export default function LoadingScreen() {
   const router = useRouter();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const [progress, setProgress] = useState(35);
 
   useEffect(() => {
@@ -40,14 +42,14 @@ export default function LoadingScreen() {
             lightColor={colors.onBrand}
             darkColor={colors.onBrand}
           >
-            Selecting topics 
+            {t('loading.selectingTopics')} 
           </ThemedText>
           <ThemedText
             size={16}
             type='bold'
             style={[styles.label, { color: colors.purple }]}
           >
-            for you...
+            {t('loading.forYou')}
           </ThemedText>
         </View>
       </ThemedView>

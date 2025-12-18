@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { BrandButton } from '@/src/components/ui/brand-button';
 import { BrandInput } from '@/src/components/ui/brand-input';
 import { BrandColors } from '@/src/constants/theme';
+import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
 import { ThemedText } from '../../themed-text';
 
@@ -33,6 +34,7 @@ export function IdentifierLogin({
   onSubmit,
 }: Props) {
   const { colors } = useTheme();
+  const { t } = useI18n();
   return (
     <View style={styles.container}>
       <View style={styles.toggleRow}>
@@ -46,7 +48,7 @@ export function IdentifierLogin({
               ]}>
               {mode === 'email' ? <View style={[styles.radioInner, { backgroundColor: colors.accentSecondary }]} /> : null}
             </View>
-            <ThemedText size={16} style={[{ color: colors.text },]} type="medium">Email address</ThemedText>
+            <ThemedText size={16} style={[{ color: colors.text },]} type="medium">{t('login.emailAddress')}</ThemedText>
           </View>
         </Pressable>
         <Pressable style={[styles.toggle, mode === 'phone' ? styles.toggleActive : null]} onPress={() => onModeChange('phone')}>
@@ -59,7 +61,7 @@ export function IdentifierLogin({
               ]}>
               {mode === 'phone' ? <View style={[styles.radioInner, { backgroundColor: colors.accentSecondary }]} /> : null}
             </View>
-            <ThemedText size={16} style={[ { color: colors.text }]} type="medium">Phone</ThemedText>
+            <ThemedText size={16} style={[ { color: colors.text }]} type="medium">{t('login.phone')}</ThemedText>
           </View>
         </Pressable>
       </View>
@@ -69,7 +71,7 @@ export function IdentifierLogin({
           keyboardType={mode === 'phone' ? 'phone-pad' : 'email-address'}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholder={mode === 'email' ? 'Email address' : 'Phone number'}
+          placeholder={mode === 'email' ? t('login.emailPlaceholder') : t('login.phonePlaceholder')}
           value={identifier}
           onChangeText={onIdentifierChange}
           returnKeyType="done"
@@ -79,7 +81,7 @@ export function IdentifierLogin({
           <BrandInput
             autoCapitalize="none"
             keyboardType="number-pad"
-            placeholder="Verification code"
+            placeholder={t('login.verificationCode')}
             value={code}
             onChangeText={onCodeChange}
             returnKeyType="done"
@@ -87,7 +89,7 @@ export function IdentifierLogin({
         ) : null}
 
         <BrandButton
-          label={showVerify ? 'Confirm code' : 'Continue'}
+          label={showVerify ? t('login.confirmCode') : t('login.continue')}
           onPress={onSubmit}
           loading={loading}
           backgroundGradientColors={[colors.accentPrimary]}

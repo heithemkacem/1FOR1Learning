@@ -91,7 +91,7 @@ export function SnackBarProvider({ children }: { children: React.ReactNode }) {
       animateIn();
       timerRef.current = setTimeout(() => {
         hideSnack();
-      }, duration ?? baseDuration);
+      }, duration ?? baseDuration) as unknown as NodeJS.Timeout;
     },
     [animateIn, hideSnack],
   );

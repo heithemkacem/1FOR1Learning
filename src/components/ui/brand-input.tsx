@@ -12,7 +12,7 @@ export function BrandInput({ label, ...rest }: Props) {
   const { colors } = useTheme();
   return (
     <View style={styles.wrapper}>
-      {label ? <ThemedText size={13} style={[styles.label, { color: colors.mutedText }]}>{label}</ThemedText> : null}
+      {label ? <ThemedText size={13} style={[{ color: colors.mutedText }]}>{label}</ThemedText> : null}
       <TextInput
         placeholderTextColor={colors.mutedText}
         style={[styles.input, { backgroundColor: colors.inputBg, borderColor: colors.inputBorder, color: colors.text ,fontFamily: 'InterMedium',fontSize:16}]}
@@ -27,9 +27,7 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 6,
   },
-  label: {
-    fontWeight: '600',
-  },
+
   input: {
     height: 52,
     borderRadius: 16,

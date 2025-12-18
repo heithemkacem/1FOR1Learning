@@ -1,7 +1,9 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ColorValue, Pressable, StyleSheet, View } from 'react-native';
+
+type GradientColors = readonly [ColorValue, ColorValue, ...ColorValue[]];
 
 import { BrandColors } from '@/src/constants/theme';
 import { ThemedText } from '../themed-text';
@@ -54,13 +56,12 @@ export function BrandButton({
 }: Props) {
   const palette = getVariant(variant);
   const isDisabled = disabled || loading;
-  const borderColors = ensureTwoStops(borderGradientColors) ?? [palette.border, palette.border];
-  const backgroundColors = backgroundGradientColors ?? [backgroundColorOverride ?? palette.background];
+  const borderColors = ensureTwoStops(borderGradientColors) ?? [palette.border, palette.border] as GradientColors;
+  const backgroundColors = ensureTwoStops(backgroundGradientColors) ?? [backgroundColorOverride ?? palette.background, backgroundColorOverride ?? palette.background] as GradientColors;
   const labelColors = ensureTwoStops(labelGradientColors);
-  const hasBackgroundGradient = backgroundColors.length > 1;
-  const hasBorderGradient = borderColors.length > 1;
-  const hasLabelGradient = (labelColors?.length ?? 0) > 1;
-  const BorderWrapper = hasBorderGradient ? LinearGradient : View;
+  const hasBackgroundGradient = backgroundGradientColors && backgroundGradientColors.length > 1;
+  const hasBorderGradient = borderGradientColors && borderGradientColors.length > 1;
+  const hasLabelGradient = labelColors !== undefined && labelColors.length > 1;
 
   const renderLabel = () => {
     if (!hasLabelGradient) {
@@ -97,11 +98,12 @@ export function BrandButton({
         pressed && !isDisabled ? styles.pressed : null,
         isDisabled ? styles.disabled : null,
       ]}>
-      <BorderWrapper
-        {...(hasBorderGradient
-          ? { colors: borderColors, start: borderGradientStart, end: borderGradientEnd }
-          : {})}
-        style={[styles.borderWrapper, !hasBorderGradient ? { backgroundColor: palette.border } : null]}>
+      {hasBorderGradient ? (
+      <LinearGradient
+        colors={borderColors}
+        start={borderGradientStart}
+        end={borderGradientEnd}
+        style={styles.borderWrapper}>
         {hasBackgroundGradient ? (
           <LinearGradient
             colors={backgroundColors}
@@ -123,7 +125,32 @@ export function BrandButton({
             </View>
           </View>
         )}
-      </BorderWrapper>
+      </LinearGradient>
+      ) : (
+      <View style={[styles.borderWrapper, { backgroundColor: palette.border }]}>
+        {hasBackgroundGradient ? (
+          <LinearGradient
+            colors={backgroundColors}
+            start={backgroundGradientStart}
+            end={backgroundGradientEnd}
+            style={styles.innerLayer}>
+            <View style={[styles.content, centerContent ? styles.contentCentered : null]}>
+              {leftIcon ? <View style={styles.icon}>{leftIcon}</View> : null}
+              {renderLabel()}
+              {loading ? <ActivityIndicator size="small" color={palette.label} style={styles.spinner} /> : <View style={styles.spinner} />}
+            </View>
+          </LinearGradient>
+        ) : (
+          <View style={[styles.innerLayer, { backgroundColor: backgroundColors[0] }]}>
+            <View style={[styles.content, centerContent ? styles.contentCentered : null]}>
+              {leftIcon ? <View style={styles.icon}>{leftIcon}</View> : null}
+              {renderLabel()}
+              {loading ? <ActivityIndicator size="small" color={palette.label} style={styles.spinner} /> : <View style={styles.spinner} />}
+            </View>
+          </View>
+        )}
+      </View>
+      )}
     </Pressable>
   );
 }
@@ -204,14 +231,14 @@ function getVariant(variant: BrandButtonVariant) {
   }
 }
 
-function ensureTwoStops(colors?: string[]) {
+function ensureTwoStops(colors?: string[]): GradientColors | undefined {
   if (!colors || colors.length === 0) {
-    return colors;
+    return undefined;
   }
 
   if (colors.length === 1) {
-    return [colors[0], colors[0]];
+    return [colors[0], colors[0]] as GradientColors;
   }
 
-  return colors;
+  return colors as unknown as GradientColors;
 }
