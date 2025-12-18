@@ -34,9 +34,9 @@
           "image": "./src/assets/images/logo/Logo1for1.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#FFFF53",
+          "backgroundColor": "#ffffff",
           "dark": {
-            "backgroundColor": "#FFFF53"
+            "backgroundColor": "#ffffff"
           }
         }
       ],
