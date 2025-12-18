@@ -4,9 +4,9 @@ import Svg, { Defs, LinearGradient, Rect, Stop, SvgXml } from 'react-native-svg'
 
 import BackgroundImage from '@/src/assets/images/background/Background.png';
 import { LanguageIcon } from '@/src/assets/images/icons/LanguageIcon';
-import { ThemedText } from '@/src/components/themed-text';
 import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
+import { ThemedText } from '../global';
 
 type Props = {
   whiteLogoXml: string;
@@ -19,11 +19,11 @@ export function LoginBackground({ whiteLogoXml }: Props) {
   return (
     <ImageBackground source={BackgroundImage} style={styles.hero} imageStyle={styles.heroImage}>
       <View style={styles.heroHeader}>
-        <ThemedText size={24} style={[styles.slogan, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark} type='extraBold'>
+        <ThemedText size={24} style={[styles.slogan, { color: colors.onDark }]} type='extraBold'>
           {t('welcome')}
         </ThemedText>
         <SvgXml xml={whiteLogoXml} width={styles.logo.width} height={styles.logo.height} />
-        <ThemedText size={24} style={[styles.subtitle, { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark} type='extraBold'>
+        <ThemedText size={24} style={[styles.subtitle, { color: colors.onDark }]} type='extraBold'>
           {t('learnYourWay')}
         </ThemedText>
       </View>

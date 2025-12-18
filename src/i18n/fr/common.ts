@@ -22,6 +22,21 @@ export default {
     title: 'Découvrir',
     tunisianTraditions: 'Traditions tunisiennes',
     tunisia: 'Tunisie',
+    description: "La Tunisie est une terre où l'histoire, la nature et l'hospitalité se rencontrent.\n\nDes dunes dorées du Sahara aux côtes turquoises de la Méditerranée, chaque recoin raconte une histoire. C'est un pays de contrastes — ancien et moderne, paisible et vibrant, où la tradition vit main dans la main avec le progrès.",
+    sections: [
+      {
+        title: 'Description historique & patrimoniale',
+        copy: "La Tunisie abrite certaines des plus anciennes civilisations du monde.\n\nLes ruines de Carthage murmurent des récits d'empires anciens, tandis que les médinas de Tunis, Kairouan et Sousse résonnent de siècles d'artisanat et de foi.\nAvec des influences berbères, arabes, andalouses et méditerranéennes, le patrimoine tunisien est une mosaïque vivante d'histoire.",
+      },
+      {
+        title: 'Description culturelle & artistique',
+        copy: "La culture tunisienne est une fête de chaleur, de créativité et d'authenticité.\n\nLa musique, la danse et l'art font partie du quotidien... du son de l'oud à la poterie colorée et aux tapis faits main.\nLes festivals célèbrent le cinéma, la musique et la tradition, rassemblant les gens dans la joie et la fierté.\nChaque geste, chaque saveur, chaque rythme raconte l'histoire d'un peuple généreux profondément attaché à ses racines.",
+      },
+    ],
+    video: {
+      title: 'Description de la nature & des paysages',
+      copy: "La Tunisie est un chef-d'œuvre peint par la nature.\n\nPromenez-vous dans les oliveraies et nagez dans des eaux cristallines sous un ciel bleu.\nDu silence du Sahara aux rivages animés de Hammamet et Djerba, la Tunisie vous invite à découvrir sa poésie naturelle.",
+    },
   },
   loading: {
     selectingTopics: 'Sélection des sujets',

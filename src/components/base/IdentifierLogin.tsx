@@ -6,7 +6,7 @@ import { BrandInput } from '@/src/components/ui/brand-input';
 import { BrandColors } from '@/src/constants/theme';
 import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
-import { ThemedText } from '../../themed-text';
+import { ThemedText } from '../global';
 
 type Mode = 'email' | 'phone';
 
@@ -93,7 +93,7 @@ export function IdentifierLogin({
           onPress={onSubmit}
           loading={loading}
           backgroundGradientColors={[colors.accentPrimary]}
-          borderGradientColors={[BrandColors.authBorder]}
+         borderGradientColors={[BrandColors.authBorder, BrandColors.authBorder]}
           backgroundGradientStart={{ x: 0, y: 0.5 }}
           backgroundGradientEnd={{ x: 1, y: 0.5 }}
           centerContent

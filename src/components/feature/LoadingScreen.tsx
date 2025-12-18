@@ -2,12 +2,11 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ThemedScreen } from '@/src/components/themed-screen';
-import { ThemedText } from '@/src/components/themed-text';
-import { ThemedView } from '@/src/components/themed-view';
+
 import { ProgressRing } from '@/src/components/ui/progress-ring';
 import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
+import { ThemedScreen, ThemedText, ThemedView } from '../global';
 
 export default function LoadingScreen() {
   const router = useRouter();
@@ -39,8 +38,6 @@ export default function LoadingScreen() {
             size={16}
             type='bold'
             style={[styles.label, { color: colors.onBrand }]}
-            lightColor={colors.onBrand}
-            darkColor={colors.onBrand}
           >
             {t('loading.selectingTopics')} 
           </ThemedText>

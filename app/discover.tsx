@@ -1,83 +1,21 @@
 import { useAuth } from '@clerk/clerk-expo';
-import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useState } from 'react';
-import { FlatList, Image, ImageBackground, StyleSheet, View, useWindowDimensions } from 'react-native';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { ThemedScreen } from '@/src/components/themed-screen';
-import { ThemedText } from '@/src/components/themed-text';
-import { ThemedView } from '@/src/components/themed-view';
-import { BrandButton } from '@/src/components/ui/brand-button';
+
+import { useDiscover } from '@/src/hooks/querys/use-discover';
 import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
-
-type DiscoverData = {
-  hero: string;
-  flag: string;
-  likes: string;
-  description: string;
-  slides: string[];
-  sections: { title: string; copy: string; image: string }[];
-};
-
-const fetchDiscover = async (): Promise<DiscoverData> => {
-  return {
-    hero: 'https://images.unsplash.com/photo-1491557345352-5929e343eb89?auto=format&fit=crop&w=1600&q=80',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Flag_of_Tunisia.svg',
-    likes: '1.2K',
-    description:
-      "Tunisia is a land where history, nature, and hospitality come together. From the golden dunes of the Sahara to the turquoise coasts of the Mediterranean, every corner tells a story. It's a country of contrasts — ancient yet modern, peaceful yet vibrant, where tradition lives hand in hand with progress.",
-    slides: [
-      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1520881363902-a0ff4e722963?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1527430253228-e93688616381?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80',
-    ],
-    sections: [
-      {
-        title: 'Historical & Heritage Description',
-        copy: 'Tunisia intertwines the stories of vibrant civilizations. From the sands of Carthage where legend and intellect merged, to the medina of Tunis, layers of stone and souks preserve centuries of cultural exchange.',
-        image: 'https://images.unsplash.com/photo-1582719478248-54e9f2d6c39d?auto=format&fit=crop&w=800&q=80',
-      },
-      {
-        title: 'Cultural & Artistic Description',
-        copy: 'Pottery, calligraphy, and music pour joy into the markets. Each alley hums with craft, color, and culinary rituals. Festivals pulse with dance, oud, and folklore, keeping heritage vivid and alive.',
-        image: 'https://images.unsplash.com/photo-1505762956754-cb1ab0c5fe46?auto=format&fit=crop&w=800&q=80',
-      },
-      {
-        title: 'Nature & Landscape',
-        copy: 'From azure coasts to desert oases, Tunisia’s landscapes are invitations to pause. Mountains embrace villages; seascapes stretch calm horizons, offering quiet escapes or spirited adventures.',
-        image: 'https://images.unsplash.com/photo-1476611338391-6f395a0ebc71?auto=format&fit=crop&w=800&q=80',
-      },
-    ],
-  };
-};
+import { scale } from '@/src/utils/scaler';
 
 export default function DiscoverScreen() {
   const router = useRouter();
   const { signOut } = useAuth();
   const { colors } = useTheme();
   const { t } = useI18n();
-  const [activeSlide, setActiveSlide] = useState(0);
-  const { width } = useWindowDimensions();
 
-  const { data } = useQuery({ queryKey: ['discover'], queryFn: fetchDiscover, staleTime: 1000 * 60 * 5 });
-
-  const slides = data?.slides ?? [];
-  const slideWidth = Math.max(260, width - 48);
-
-  const onScroll = useCallback(
-    ({ nativeEvent }: any) => {
-      if (!nativeEvent?.contentOffset) return;
-      const { contentOffset, layoutMeasurement } = nativeEvent;
-      const index = Math.round(contentOffset.x / layoutMeasurement.width);
-      if (index !== activeSlide) setActiveSlide(index);
-    },
-    [activeSlide],
-  );
+  const { data } = useDiscover();
 
   const handleLogout = async () => {
     await signOut();
@@ -88,171 +26,75 @@ export default function DiscoverScreen() {
 
   return (
     <ThemedScreen style={styles.safeArea}>
-      <ImageBackground source={{ uri: data.hero }} style={styles.hero} imageStyle={styles.heroImage}>
-        <View style={[styles.overlay, { backgroundColor: colors.scrim }]} />
-        <View style={styles.headerRow}>
-          <View style={styles.flagRow}>
-            <Image source={{ uri: data.flag }} style={[styles.flag, { backgroundColor: colors.onDark }]} />
-            <ThemedText size={16} style={[{ color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-              {t('discover.tunisia')}
-            </ThemedText>
-          </View>
-          <BrandButton label={t('login.logout')} variant="ghost" onPress={handleLogout} />
-        </View>
-
-        <View style={styles.titleBlock}>
-          <ThemedText size={30} style={[ { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-            {t('discover.title')}
-          </ThemedText>
-          <ThemedText size={30} style={[ { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-            {t('discover.tunisianTraditions')}
-          </ThemedText>
-        </View>
-
-        <ThemedView style={[styles.card, { borderColor: colors.border }]} lightColor={colors.card} darkColor={colors.card}>
-          <View style={styles.cardHeader}>
-            <ThemedText size={18} style={[ { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-              {t('discover.tunisia')}
-            </ThemedText>
-            <View style={[styles.likes, { backgroundColor: colors.pill }]}> 
-              <Ionicons name="heart" size={16} color={colors.accentPrimary} />
-              <ThemedText style={[ { color: colors.onDark }]} lightColor={colors.onDark} darkColor={colors.onDark}>
-                {data.likes}
-              </ThemedText>
-            </View>
-          </View>
-          <ThemedText size={14} style={[styles.cardCopy, { color: colors.text }]} lightColor={colors.text} darkColor={colors.text}>
-            {data.description}
-          </ThemedText>
-        </ThemedView>
-
-        <View style={styles.carouselWrapper}>
-          <FlatList
-            data={slides}
-            renderItem={({ item }) => <Image source={{ uri: item }} style={[styles.slide, { width: slideWidth }]} />}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, idx) => `${item}-${idx}`}
-            onScroll={onScroll}
-            scrollEventThrottle={16}
-            snapToAlignment="center"
-            decelerationRate="fast"
-            snapToInterval={slideWidth + 12}
-          />
-          <View style={[styles.carouselMeta, { backgroundColor: colors.scrimStrong }]}>
-            <ThemedText style={[ { color: colors.onDark }]}>{`${activeSlide + 1}/${slides.length}`}</ThemedText>
-          </View>
-        </View>
-      </ImageBackground>
-
      
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <HeroSection imageSource={data.hero} />
+        <View style={[styles.contentContainer, { backgroundColor: colors.screen }]}> 
+          <DiscoverSection
+            title="Tunisia"
+            likes={data.likes}
+            copy={data.description}
+            accentColor={colors.accent}
+            hasLike
+          />
+          {data.sections.map((section, index) => (
+            <DiscoverSection
+              key={index}
+              title={section.title}
+              copy={section.copy}
+              imageSource={section.image}
+              accentColor={colors.accent}
+            />
+          ))}
+          <DiscoverSection
+            title={data.video.title}
+            videoUri={data.video.url}
+            imageSource={data.video.cover}
+            accentColor={colors.accent}
+            copy={data.video.copy}
+            hasVideo
+          />
+        </View>
+      </ScrollView>
+       <View style={styles.logoutContainer}>
+        <View style={{ flex: 1 }} />
+        <View>
+          <LogoutButton onPress={handleLogout} />
+        </View>
+      </View>
     </ThemedScreen>
   );
 }
+
+import { DiscoverSection, HeroSection } from '@/src/components/base';
+import { ThemedScreen } from '@/src/components/global/themed-screen';
+import { Text, TouchableOpacity } from 'react-native';
+
+const LogoutButton = ({ onPress }: { onPress: () => void }) => (
+  <TouchableOpacity onPress={onPress} style={{ padding: 10, backgroundColor: '#E53935', borderRadius: 8 }}>
+    <Text style={{ color: '#fff', fontWeight: 'bold' }}>Logout</Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
-  hero: {
-    height: 520,
-    paddingHorizontal: 18,
-    paddingTop: 12,
-    justifyContent: 'flex-start',
-  },
-  heroImage: {
-    resizeMode: 'cover',
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  headerRow: {
+  logoutContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: 6,
+    paddingHorizontal: scale(16),
+    paddingTop: scale(16),
+    zIndex: 10,
   },
-  flagRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
+  scrollView: {
+    flex: 1,
   },
-  flag: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-
-  titleBlock: {
-    marginTop: 40,
-    gap: -2,
-  },
-
-  card: {
-    marginTop: 22,
-    borderRadius: 18,
-    padding: 16,
-    gap: 10,
-    borderWidth: 1,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  likes: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-  },
-
-  cardCopy: {
-    lineHeight: 20,
-  },
-  carouselWrapper: {
-    marginTop: 12,
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  slide: {
-    width: 320,
-    height: 200,
-    marginRight: 12,
-    borderRadius: 14,
-  },
-  carouselMeta: {
-    position: 'absolute',
-    bottom: 10,
-    right: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
- 
-  sections: {
-    paddingHorizontal: 16,
-    paddingVertical: 18,
-    gap: 14,
-  },
-  sectionCard: {
-    borderRadius: 18,
-    overflow: 'hidden',
-    borderWidth: 1,
-  },
-  sectionImage: {
-    height: 180,
-    width: '100%',
-  },
-  sectionContent: {
-    padding: 14,
-    gap: 8,
-  },
- 
-  sectionCopy: {
-    lineHeight: 19,
+  contentContainer: {
+    paddingHorizontal: scale(16),
+    paddingTop: scale(20),
+    paddingBottom: scale(40),
+    gap: scale(20),
   },
 });

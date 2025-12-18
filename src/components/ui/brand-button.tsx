@@ -6,7 +6,7 @@ import { ActivityIndicator, ColorValue, Pressable, StyleSheet, View } from 'reac
 type GradientColors = readonly [ColorValue, ColorValue, ...ColorValue[]];
 
 import { BrandColors } from '@/src/constants/theme';
-import { ThemedText } from '../themed-text';
+import { ThemedText } from '../global';
 
 export type BrandButtonVariant =
   | 'primary'

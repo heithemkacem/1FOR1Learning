@@ -22,6 +22,21 @@ export default {
     title: 'Discover',
     tunisianTraditions: 'Tunisian traditions',
     tunisia: 'Tunisia',
+    description: "Tunisia is a land where history, nature, and hospitality come together.\n\nFrom the golden dunes of the Sahara to the turquoise coasts of the Mediterranean, every corner tells a story. It's a country of contrasts — ancient yet modern, peaceful yet vibrant, where tradition lives hand in hand with progress.",
+    sections: [
+      {
+        title: 'Historical & Heritage Description',
+        copy: "Tunisia is home to some of the oldest civilizations in the world.\n\nThe ruins of Carthage whisper tales of ancient empires, while the medinas of Tunis, Kairouan, and Sousse echo centuries of craftsmanship and faith.\nWith influences from Berber, Arab, Andalusian, and Mediterranean cultures, Tunisia's heritage is a living mosaic of history.",
+      },
+      {
+        title: 'Cultural & Artistic Description',
+        copy: "Tunisian culture is a festival of warmth, creativity, and authenticity.\n\nMusic, dance, and art are part of daily life ... from the sound of the oud to vivid colorful pottery and handmade carpets.\nFestivals celebrate film, music, and tradition, bringing people together in joy and pride.\nEvery gesture, every flavor, every rhythm tells the story of a generous people deeply connected to their roots.",
+      },
+    ],
+    video: {
+      title: 'Nature & Landscapes Description',
+      copy: "Tunisia is a masterpiece painted by nature.\n\nWalk through olive groves, and swim in crystal-clear waters under a blue sky.\nFrom the Sahara's silence to the lively shores of Hammamet and Djerba, Tunisia invites you to discover its natural poetry.",
+    },
   },
   loading: {
     selectingTopics: 'Selecting topics',

@@ -2,9 +2,9 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/src/components/themed-text';
 import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
+import { ThemedText } from '../global';
 
 export function LegalNotice() {
   const { colors } = useTheme();

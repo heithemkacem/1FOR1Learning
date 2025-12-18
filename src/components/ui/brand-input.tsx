@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 
 import { useTheme } from '@/src/hooks/use-theme';
-import { ThemedText } from '../themed-text';
+import { ThemedText } from '../global/themed-text';
 
 type Props = TextInputProps & {
   label?: string;

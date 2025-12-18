@@ -11,6 +11,7 @@ const tintColorDark = '#fff';
 export const BrandColors = {
   primary: '#FFEB3B',
   secondary: '#00D8FF',
+  accent: '#FFC117',
   dark: '#0F0F0F',
   card: '#1C1C1E',
   surface: '#22252A',
@@ -58,6 +59,7 @@ type UIColors = {
   mutedText: string;
   accentPrimary: string;
   accentSecondary: string;
+  accent: string;
   successBg: string;
   successText: string;
   errorBg: string;
@@ -104,6 +106,7 @@ const UIpalette: Record<ThemeName, UIColors> = {
     mutedText: '#6F7075',
     accentPrimary: BrandColors.primary,
     accentSecondary: BrandColors.secondary,
+    accent: BrandColors.accent,
     purple:"#4000FF",
     successBg: '#0BBF63',
     successText: '#04160D',
@@ -114,7 +117,7 @@ const UIpalette: Record<ThemeName, UIColors> = {
     pill: 'rgba(0,0,0,0.08)',
   },
   dark: {
-    screen: '#0A0A0B',
+    screen: '#000000',
     screenAlt: '#111114',
     card: '#111114',
     cardMuted: '#1B1B1F',
@@ -129,6 +132,7 @@ const UIpalette: Record<ThemeName, UIColors> = {
     mutedText: '#A6A6AA',
     accentPrimary: BrandColors.primary,
     accentSecondary: BrandColors.secondary,
+    accent: BrandColors.accent,
     successBg: '#0BBF63',
     successText: '#04160D',
     errorBg: '#FF5C5C',

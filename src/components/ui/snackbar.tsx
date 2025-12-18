@@ -4,7 +4,7 @@ import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/src/hooks/use-theme';
-import { ThemedText } from '../themed-text';
+import { ThemedText } from '../global';
 
 export type SnackVariant = 'info' | 'success' | 'error';
 

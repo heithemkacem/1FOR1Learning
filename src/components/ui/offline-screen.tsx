@@ -6,8 +6,8 @@ import Svg, { Circle, Defs, Stop, LinearGradient as SvgLinearGradient } from 're
 
 import { useI18n } from '@/src/hooks/use-i18n';
 import { useTheme } from '@/src/hooks/use-theme';
-import { ThemedScreen } from '../themed-screen';
-import { ThemedText } from '../themed-text';
+
+import { ThemedScreen, ThemedText } from '../global';
 import { BrandButton } from './brand-button';
 
 type Props = {
@@ -154,7 +154,7 @@ export function OfflineScreen({ onRetry }: Props) {
 
         {/* Text content */}
         <View style={styles.textContainer}>
-          <ThemedText 
+          <ThemedText
             size={28} 
             type="extraBold" 
             style={[styles.title, { color: colors.text }]}

@@ -5,7 +5,7 @@ import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 
 import { BrandColors } from '@/src/constants/theme';
 import { useTheme } from '@/src/hooks/use-theme';
-import { ThemedText } from '../themed-text';
+import { ThemedText } from '../global';
 
 type Props = {
   size?: number;

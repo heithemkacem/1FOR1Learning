@@ -1,4 +1,4 @@
-import SplashScreen from '@/src/components/screens/splach_screen/SplashScreen';
+import SplashScreen from '@/src/components/feature/SplashScreen';
 
 export default function SplashScreenPage() {
   return <SplashScreen />;

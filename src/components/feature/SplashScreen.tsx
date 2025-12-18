@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 import { Animated, Easing, StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
-import { logo1for1Xml } from '@/src/assets/images/logo1for1Xml';
-import { ThemedScreen } from '@/src/components/themed-screen';
+import { logo1for1Xml } from '@/src/assets/images/logo/logo1for1Xml';
+import { ThemedScreen } from '../global';
 
 const logoXml = logo1for1Xml;
 

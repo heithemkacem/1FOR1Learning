@@ -1,12 +1,10 @@
 import { StyleSheet, Text, type TextProps } from 'react-native';
 
 import { useThemeColor } from '@/src/hooks/use-theme-color';
-import { scaleFont } from '../utils/scaler';
+import { scaleFont } from '@/src/utils/scaler';
 
 export type ThemedTextProps = TextProps & {
-  lightColor?: string;
-  darkColor?: string;
-  colorName?: Parameters<typeof useThemeColor>[1];
+  colorName?: Parameters<typeof useThemeColor>[0];
   size?: number;
   type?:
     | 'thin'
@@ -31,14 +29,12 @@ export type ThemedTextProps = TextProps & {
 
 export function ThemedText({
   style,
-  lightColor,
-  darkColor,
   colorName = 'text',
   size = 14,
   type = 'regular',
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, colorName);
+  const color = useThemeColor(colorName);
 
   return (
     <Text
